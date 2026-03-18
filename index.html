@@ -690,7 +690,6 @@
             padding: 1.5rem;
         }
 
-        /* Add this near your other @font-face rules (around line 90) */
 @font-face {
     font-family: 'FlowerBudsMonogram';
     src: url('/fonts/Flower-Buds-Monogram.ttf') format('truetype');
@@ -706,6 +705,28 @@
             color: var(--gold); 
             margin-right: 3px; 
         }
+
+     
+.hero-slide .slide-pre-title,
+.hero-slide .slide-title,
+.hero-slide .slide-desc,
+.hero-slide .slide-btn {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: none; 
+}
+
+.swiper-slide-active .slide-pre-title,
+.swiper-slide-active .slide-title,
+.swiper-slide-active .slide-desc,
+.swiper-slide-active .slide-btn {
+    animation: fadeUp 0.8s forwards;
+}
+
+.swiper-slide-active .slide-pre-title { animation-delay: 0.2s; }
+.swiper-slide-active .slide-title { animation-delay: 0.4s; }
+.swiper-slide-active .slide-desc { animation-delay: 0.6s; }
+.swiper-slide-active .slide-btn { animation-delay: 0.8s; }
     </style>
 </head>
 <body>
