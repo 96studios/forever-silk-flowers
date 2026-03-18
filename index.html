@@ -3,738 +3,1040 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forever Silk Flowers · Make It Last Forever</title>
+    <title>Forever Silk Flowers</title>
     <!-- Bootstrap 5 + icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Swiper slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --brand-gold: #000000;          
-            --brand-dark-moss: #e2485c;      
+            --gold: #d4af37;
+            --gold-dark: #b49450;
+            --charcoal: #1a1a1a;
+            --cream: #FDFBF7;
             --pure-white: #ffffff;
-            --soft-cream: #faf8f5;            
-            --gold-fade: rgba(185,161,81,0.2); 
-            --gold-light-bg: rgba(185,161,81,0.05); 
-            --shadow-soft: rgba(0,0,0,0.1);
-            --gradient-overlay: #faf8f5;      
-            --footer-bg: #f2efe8;            
-        }
-
-        @font-face {
-            font-family: 'Reman';
-            src: url('/fonts/reman.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Josefin Sans';
-            font-style: normal;
-            font-weight: 300 700;
-            src: url('https://fonts.gstatic.com/s/josefinsans/v32/Qw3PZQNVED7rKGKxtqIqX5E-AVSJrOCfjY46_DjQbMlhLzTs.woff2') format('woff2');
-        }
-        @font-face {
-            font-family: 'Karla';
-            font-style: normal;
-            font-weight: 400 700;
-            src: url('https://fonts.gstatic.com/s/karla/v31/qkBbXvYC6trAT7RVLtyU5rZPoAU.woff2') format('woff2');
+            --soft-border: rgba(212, 175, 55, 0.2);
         }
 
         body {
-            font-family: 'Karla', sans-serif;
-            color: var(--brand-dark-moss);
-            background-color: var(--pure-white);
-            line-height: 1.7;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden; 
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        main {
-            flex: 1 0 auto;
-        }
-        h1, h2, h3 {
-            font-family: 'Josefin Sans', sans-serif;
-            color: var(--brand-gold);
-            letter-spacing: 1px;
-        }
-
-        h4 {
-            font-family: 'Reman', serif !important;
-            color: var(--brand-gold);
-            letter-spacing: 0.5px;
-            font-weight: normal;
-            font-size: 1.75rem;
-        }
-        h4 i {
-            font-family: 'Karla', 'Josefin Sans', sans-serif;
-        }
-
-        .text-brand {
-            color: var(--brand-gold) !important;
-        }
-        .btn-outline-brand {
-            border: 2px solid var(--brand-gold);
-            color: var(--brand-gold);
-            background: transparent;
-            border-radius: 0;
-            padding: 8px 26px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.2s;
-        }
-        .btn-outline-brand:hover {
-            background: var(--brand-gold);
-            color: var(--pure-white);
-        }
-
-        .hero-padding {
-            padding: 5rem 0 3rem 0;
-        }
-        .hero-title {
-            font-size: 3.2rem;
-            font-family: 'Josefin Sans', sans-serif;
-            color: var(--brand-gold);
-            line-height: 1.2;
-        }
-        .hero-title .reman-word {
-            font-family: 'Reman', serif;
-            display: block;
-            font-size: 4rem;
-            margin-top: 0.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .hero-subhead {
-            font-family: 'Josefin Sans', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 1.1rem;
-            color: var(--brand-dark-moss);
-            font-weight: 300;
-        }
-        .hero-quote {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 1.5rem;
-            color: var(--brand-dark-moss);
-            font-style: italic;
-            margin-top: 1rem;
-        }
-
-        .img-wrapper {
-            display: block;
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            padding-top: 80px;
+            overflow-x: hidden;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
-        .col-6 .img-wrapper {
-            height: 280px;
-        }
-        
-        .col-12 .img-wrapper {
-            height: 240px;
-        }
-        
-        .g-3, .gy-3 {
-            --bs-gutter-y: 1rem;
         }
 
-        .expandable-wrapper {
-            margin-bottom: 8px;
-        }
-        
-        .expandable-text {
-            max-height: 80px;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
-            position: relative;
-        }
-        
-        .expandable-text:not(.expanded)::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, var(--gradient-overlay));
-            pointer-events: none;
-        }
-        
-        .expandable-text.expanded {
-            max-height: 2000px;
-        }
-        
-        .expandable-text.expanded::after {
-            display: none;
-        }
-        
-        .read-more-btn {
-            background: none;
-            border: none;
-            color: var(--brand-gold);
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 0;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-            margin-top: 4px;
-        }
-        
-        .read-more-btn:hover {
-            color: color-mix(in srgb, var(--brand-gold) 80%, black);
-            gap: 8px;
-        }
-        
-        .read-more-btn i {
-            transition: transform 0.2s ease;
-        }
-        
-        .read-more-btn:hover i {
-            transform: translateX(3px);
+        body {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.03"><path d="M50,50 C30,50 15,70 25,90 C10,105 20,130 40,130 C45,150 70,155 85,140 C100,155 125,150 130,130 C150,130 160,105 145,90 C155,70 140,50 120,50 C105,30 80,30 65,45 C55,35 40,40 40,55 C35,60 40,70 50,70 C60,70 65,60 60,50" fill="%23d4af37"/><path d="M150,150 C135,150 125,165 132,178 C120,190 135,200 148,192 C155,205 175,200 180,185 C195,185 200,170 190,160 C200,145 185,135 170,140 C165,125 150,130 150,145 C145,150 140,150 145,158" fill="%23d4af37"/></svg>');
+            background-repeat: repeat;
+            background-size: 400px 400px;
         }
 
-        .pdf-info {
-            margin-top: 3rem;
-            padding-top: 2rem;
-        }
-        
-        .contact-row {
-            background-color: var(--gold-light-bg);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            font-size: 1.2rem;
-        }
-        
-        .service-category {
-            margin-bottom: 2rem;
-        }
-        
-        .service-category h5 {
-            color: var(--brand-gold);
-            font-family: 'Josefin Sans', sans-serif;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
-        }
-        
-        .service-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .service-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--gold-fade);
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .service-list li i {
-            color: var(--brand-gold);
-            font-size: 0.8rem;
-            margin-top: 8px;
-        }
-        
-        .service-list li span {
-            flex: 1;
-        }
-        
-        .company-tagline {
-            font-family: 'Reman', serif;
-            font-size: 2rem;
-            color: var(--brand-gold);
-            text-align: center;
-            margin: 2rem 0;
-            letter-spacing: 2px;
-        }
-        
-        .sustainable-badge {
-            background-color: var(--brand-dark-moss);
-            color: var(--pure-white);
-            padding: 0.8rem 1.5rem;
-            display: inline-block;
-            font-family: 'Josefin Sans', sans-serif;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
+        h1, h2, h3, h4, .nav-link, .gold-text {
+            font-family: "Space Grotesk", sans-serif;
+            font-weight: 500;
+            letter-spacing: -0.02em;
         }
 
-        .reman-heading {
-            font-family: 'Reman', serif !important;
+        html {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .page-header {
-            background-color: var(--soft-cream);
-            padding: 1rem 0 0.5rem 0; 
-            border-bottom: 1px solid var(--gold-fade);
+            background: #000000;  
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease, padding 0.3s ease;
         }
-        .header-logo img {
-            max-height: 60px;
+
+        .page-header.hide {
+            transform: translateY(-100%);
+        }
+
+        .page-header.compact {
+            padding: 0.5rem 0;
+        }
+
+        .logo-img {
+            height: 50px;
             width: auto;
             display: block;
+            transition: height 0.3s ease;
         }
+
+        .page-header.compact .logo-img {
+            height: 40px;
+        }
+
         .header-contact {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 2rem;
             justify-content: flex-end;
-            align-items: center;
-            font-size: 1rem;
-            color: var(--brand-dark-moss);
+            flex-wrap: wrap;
+            transition: opacity 0.3s ease, transform 0.3s ease, margin 0.3s ease, height 0.3s ease;
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+            margin: 0;
         }
+
+        .header-contact.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            margin: 0;
+            height: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
         .header-contact-item {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
+            color: var(--gold);
+            text-decoration: none;
             white-space: nowrap;
         }
         .header-contact-item i {
-            color: var(--brand-gold);
-            font-size: 1.1rem;
+            color: var(--gold);
         }
-        .hero-padding {
-            padding: 3rem 0 3rem 0;
+
+        .hero-section {
+            position: relative;
+            height: 65vh;
+            min-height: 560px;
+            overflow: hidden;
+            margin-top: 0;
+            border-radius: 0 0 40px 0px;
+        }
+
+        .hero-swiper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .hero-slide {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) saturate(1.2);
+        }
+
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0,0,0,0.7) 25%,
+                rgba(0,0,0,0.3) 60%,
+                rgba(0,0,0,0.4) 100%
+            );
+            display: flex;
+            align-items: center;
+            padding-left: 10%;
+        }
+
+        .slide-content {
+            max-width: 700px;
+            color: white;
+        }
+
+        .slide-pre-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.2s;
+        }
+
+        .slide-title {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.4s;
+        }
+
+    @font-face {
+        font-family: 'HenriDidot';
+        src: url('/fonts/HenriDidot.otf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    .slide-title span {
+        color: var(--gold);
+        font-family: 'HenriDidot', serif;
+        font-style: normal;
+        display: block;
+        font-size: 0.8em;
+    }
+        .slide-desc {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.6s;
+        }
+
+        .slide-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--gold);
+            color: var(--charcoal);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 0 50px 50px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.8s;
+        }
+
+        .slide-btn:hover {
+            gap: 2rem;
+            background: white;
+            color: var(--charcoal);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-nav {
+            display: none;
+        }
+
+        .folder-icon {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1001;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #000000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+        }
+
+        .folder-icon:hover {
+            transform: scale(1.1);
+            background: var(--gold);
+            color: #000000;
+        }
+
+        .section-padding {
+            padding: 5rem 0;
+        }
+
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1320px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        .vision-mission-card {
+            padding: 2.5rem;
+            border-left: 4px solid var(--gold);
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            height: 100%;
+            border: 1px solid var(--soft-border);
+            transition: 0.3s;
+        }
+        .service-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        .service-card i {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+        .service-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--soft-border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .service-list li i {
+            font-size: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .footer-modern {
+            background: white;
+            padding: 1rem 0;
+            border-top: 1px solid var(--soft-border);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 1199px) {
+            .slide-overlay { padding-left: 6%; }
+            .slide-content { max-width: 600px; }
+        }
+
+        @media (max-width: 991px) {
+            .hero-section { height: 60vh; min-height: 480px; }
+            .slide-content { max-width: 550px; }
+            .slide-title { font-size: clamp(2.8rem, 7vw, 4.5rem); }
+            .header-contact { gap: 1.5rem; }
+            .header-contact-item { white-space: normal; }
+            .vision-mission-card { padding: 2rem; }
+            body { padding-top: 70px; }
+            
+            .folder-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.6rem;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.4rem; }
-            .hero-title .reman-word { font-size: 3rem; }
-            .hero-quote { font-size: 1.2rem; }
-            .col-6 .img-wrapper {
-                height: 200px;
-            }
-            .col-12 .img-wrapper {
-                height: 180px;
-            }
-            .expandable-text {
-                max-height: 100px;
-            }
-            .company-tagline {
-                font-size: 1.5rem;
-            }
-            .header-contact {
-                justify-content: center;
-                gap: 1rem;
-                margin-top: 10px;
-            }
+            .hero-section { height: 70vh; min-height: 480px; }
+            .slide-overlay { padding-left: 5%; padding-right: 5%; align-items: flex-end; padding-bottom: 15%; }
+            .slide-content { max-width: 100%; }
+            .slide-title { font-size: clamp(2.5rem, 10vw, 4rem); }
+            .slide-desc { font-size: 1.1rem; }
+            
             .page-header .row {
-                text-align: center;
+                align-items: flex-start;
             }
-            .header-logo {
-                display: flex;
-                justify-content: center;
+            
+            .header-contact { 
+                justify-content: flex-end;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            .page-header .col-md-4, 
+            .page-header .col-md-8 { 
+                text-align: left; 
+            }
+            
+            .page-header .col-12 {
+                align-self: flex-start;
+            }
+            
+            .section-padding { padding: 3rem 0; }
+            
+            .vision-mission-card .col-md-6:first-child { margin-bottom: 1.5rem; }
+            
+            .footer-modern .row > div { 
+                text-align: center !important; 
+                margin-bottom: 1rem;
+            }
+            .footer-modern .col-md-4.text-end { text-align: center !important; }
+            
+            .container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            .folder-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+            
+            .page-header.compact {
+                padding: 0.3rem 0;
+            }
+            
+            .page-header.compact .logo-img {
+                height: 35px;
             }
         }
 
-        .right-hero-content {
-            transition: opacity 0.25s ease;
+        @media (max-width: 576px) {
+            .hero-section { min-height: 440px; }
+            .slide-overlay { padding-bottom: 25%; }
+            .slide-title span { display: inline-block; margin-left: 0.2rem; }
+            .slide-btn { padding: 0.8rem 1.8rem; font-size: 0.8rem; }
+            
+            .page-header .row {
+                align-items: flex-start;
+            }
+            
+            .header-contact { 
+                flex-direction: column; 
+                gap: 0.4rem; 
+                align-items: flex-end;
+                justify-content: flex-start;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            .header-contact-item { 
+                white-space: nowrap; 
+                font-size: 0.7rem;
+                text-align: right;
+            }
+            
+            .vision-mission-card { padding: 1.5rem; }
+            
+            .service-card { padding: 1.5rem; }
+            
+            h2 { font-size: 2.2rem !important; }
+            
+            .container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            body { padding-top: 60px; }
+            .logo-img { height: 40px; }
+            
+            .folder-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.4rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .page-header.compact .logo-img {
+                height: 32px;
+            }
         }
-        .right-hero-content.d-none {
-            display: none !important;
+
+        @media (max-width: 380px) {
+            .slide-title { font-size: clamp(2rem, 8vw, 2.8rem); }
+            .slide-desc { font-size: 1rem; }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .folder-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+                bottom: 0.8rem;
+                right: 0.8rem;
+            }
+            
+            .header-contact-item {
+                font-size: 0.7rem;
+            }
         }
-        
-        .gallery-expanded #galleryColumn {
-            flex: 0 0 100%;
-            max-width: 100%;
-            margin-left: 0 !important;
+
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            background-color: #f5f5f5;
         }
-        
-        .gallery-expanded .row {
-            margin-left: 0;
-            margin-right: 0;
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            opacity: 0;
         }
-        
-        .gallery-expanded [class*="col-"] {
-            padding-left: calc(var(--bs-gutter-x) * 0.5);
-            padding-right: calc(var(--bs-gutter-x) * 0.5);
+
+        .gallery-img.loaded {
+            opacity: 1;
         }
-        
-        .back-home-btn {
-            margin-top: 2rem;
-            text-align: center;
+
+        .image-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            z-index: 1;
         }
-        
-        .extra-gallery-img {
+
+        .image-loader.hidden {
             display: none;
         }
-        
-        .gallery-expanded .extra-gallery-img {
-            display: block;
-        }
-        
-        .gallery-expanded .col-6 .img-wrapper {
-            height: 280px;
-        }
-        
-        .gallery-expanded .col-12 .img-wrapper {
-            height: 240px;
-        }
-        
-        .container {
-            width: 100%;
-            padding-right: var(--bs-gutter-x, 0.75rem);
-            padding-left: var(--bs-gutter-x, 0.75rem);
-            margin-right: auto;
-            margin-left: auto;
-        }
-        
-        .row {
-            --bs-gutter-x: 1.5rem;
-            margin-right: calc(-0.5 * var(--bs-gutter-x));
-            margin-left: calc(-0.5 * var(--bs-gutter-x));
-        }
-        
-        .gallery-expanded .row {
-            margin-right: calc(-0.5 * var(--bs-gutter-x));
-            margin-left: calc(-0.5 * var(--bs-gutter-x));
+
+        .image-loader .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gold);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        .page-footer {
-            background-color: var(--footer-bg);
-            padding: 2rem 0 1.5rem 0;
-            border-top: 2px solid var(--gold-fade);
-            color: var(--brand-dark-moss);
-            flex-shrink: 0;
-        }
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem 2rem;
-        }
-        .footer-copy {
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
-        }
-        .footer-copy i {
-            color: var(--brand-gold);
-            margin-right: 4px;
-        }
-        .footer-tagline {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            letter-spacing: 1.5px;
-            color: var(--brand-gold);
-            background: rgba(185,161,81,0.1);
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .footer-tagline i {
-            font-size: 1.2rem;
-        }
-        .footer-social {
-            display: flex;
-            gap: 1.2rem;
-        }
-        .footer-social a {
-            color: var(--brand-dark-moss);
-            font-size: 1.3rem;
-            transition: color 0.2s, transform 0.2s;
-        }
-        .footer-social a:hover {
-            color: var(--brand-gold);
-            transform: translateY(-3px);
-        }
-        @media (max-width: 576px) {
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
             }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--gold);
+        }
+
+        .gallery-item:hover .gallery-img.loaded {
+            transform: scale(1.05);
+        }
+
+        .view-icon {
+            display: none;
+        }
+
+        .image-view-modal .modal-dialog {
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .image-view-modal .modal-content {
+            background: #000000 !important;
+            border: none;
+            border-radius: 0;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .image-view-modal .modal-body {
+            padding: 0;
+            text-align: center;
+            background: #080808 !important;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-view-modal img {
+            max-width: 100%;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            background: #000000;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-view-modal img.loaded {
+            opacity: 1;
+        }
+
+        .modal-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 1;
+        }
+
+        .modal-loader.hidden {
+            display: none;
+        }
+
+        .image-view-modal .btn-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1060;
+            background-color: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        .image-view-modal .btn-close:hover {
+            opacity: 1;
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .modal-gallery-grid .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Add this near your other @font-face rules (around line 90) */
+@font-face {
+    font-family: 'FlowerBudsMonogram';
+    src: url('/fonts/Flower-Buds-Monogram.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+        .display-5.fw-semibold:first-of-type::first-letter {
+            font-family: 'FlowerBudsMonogram', cursive;
+            font-size: 0.7em; 
+            font-weight: normal;
+            color: var(--gold); 
+            margin-right: 3px; 
         }
     </style>
 </head>
 <body>
 
-<div class="page-header">
+<header class="page-header" id="mainHeader">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-12 col-md-6 header-logo">
-                <img src="logo-01.svg" alt="Forever Silk Flowers logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span style="display:none; font-family: 'Reman'; font-size: 1.8rem; color: var(--brand-gold);">Forever Silk</span>
+            <div class="col-12 col-md-4 text-center text-md-start">
+                <img src="logo-02.svg" class="logo-img" alt="Forever Silk Flowers">
             </div>
-            <div class="col-12 col-md-6">
-                <div class="header-contact">
-                    <span class="header-contact-item"><i class="bi bi-telephone-fill"></i> +27 83 492 9506</span>
-                    <span class="header-contact-item"><i class="bi bi-envelope-fill"></i> info@foreversilkflowers.co.za</span>
+            <div class="col-12 col-md-8">
+                <div class="header-contact text-md-end" id="headerContact">
+                    <span class="header-contact-item"><i class="bi bi-telephone"></i> +27 83 492 9506</span>
+                    <span class="header-contact-item"><i class="bi bi-envelope"></i> info@foreversilkflowers.co.za</span>
                 </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<button class="folder-icon" title="Gallery" data-bs-toggle="modal" data-bs-target="#galleryModal">
+    <i class="bi bi-folder2-open"></i>
+</button>
+
+<div class="modal fade modal-gallery-grid" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fs-2" id="galleryModalLabel">Gallery<span style="color: var(--charcoal);">.</span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid px-0">
+                    <div class="row g-3 g-md-4" id="galleryGrid">
+                        <!-- Contents -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade image-view-modal" id="imageViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent">
+            <div class="modal-body position-relative">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-loader" id="modalLoader"></div>
+                <img src="" id="largeImageView" alt="Large view" style="opacity: 0;">
             </div>
         </div>
     </div>
 </div>
 
 <main>
-<section id="hero" class="hero-padding" style="background-color: var(--soft-cream);">
-    <div class="container" id="heroContainer">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6" id="galleryColumn">
-                <div class="row g-3" id="imageGrid">
-                    <div class="col-6">
-                        <div class="img-wrapper">
-                            <img src="images/image00001.jpeg" 
-                                 alt="silk flower arrangement">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="img-wrapper">
-                            <img src="images/image00002.jpeg" 
-                                 alt="close up of fabric bloom">
-                        </div>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00003.jpeg" 
-                                 alt="elegant floral decor">
-                        </div>
-                    </div>
-
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00004.jpeg" alt="silk arrangement detail">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00005.jpeg" alt="bouquet">
-                        </div>
-                    </div>
-                    <div class="col-12 extra-gallery-img mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00006.jpeg" alt="table setting">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00007.jpeg" alt="flower wall">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00008.jpeg" alt="pink peonies">
-                        </div>
-                    </div>
-                    <div class="col-12 extra-gallery-img mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00009.jpeg" alt="neutral decor">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00010.jpeg" alt="flower composition">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00011.jpeg" alt="rustic flowers">
-                        </div>
-                    </div>
-                    <div class="col-12 extra-gallery-img mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00012.jpeg" alt="elegant centerpiece">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00013.jpeg" alt="modern floral">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00021.jpeg" alt="silk orchid">
-                        </div>
-                    </div>
-                    <div class="col-12 extra-gallery-img mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00015.jpeg" alt="vase setting">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00016.jpeg" alt="flower shop">
-                        </div>
-                    </div>
-                    <div class="col-6 extra-gallery-img">
-                        <div class="img-wrapper">
-                            <img src="images/image00017.jpeg" alt="roses">
-                        </div>
-                    </div>
-                    <div class="col-12 extra-gallery-img mt-3">
-                        <div class="img-wrapper">
-                            <img src="images/image00018.jpeg" alt="repeat but variety">
+    <section class="hero-section">
+        <div class="swiper hero-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide hero-slide">
+                    <img src="images/image00021.jpeg" alt="">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <div class="slide-pre-title">Sustainable floral artistry</div>
+                            <div class="slide-title">MAKE IT <span>LAST FOREVER!</span></div>
+                            <div class="slide-desc">Where silk meets sophistication — bespoke floral designs for the discerning eye.</div>
+                            <a href="#" class="slide-btn">Explore collection <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="back-home-btn d-none" id="backHomeBtn">
-                    <button class="btn btn-outline-brand" onclick="toggleGallery(false)">
-                        <i class="bi bi-house-door me-2"></i>Back Home
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-lg-6 right-hero-content" id="rightHeroContent">
-                <span class="hero-subhead">Forever Silk Flowers</span>
-                <div class="sustainable-badge">
-                    <i class="bi bi-flower1 me-2"></i> Sustainable and Environmentally-friendly floral artistry
-                </div>
-                <p class="lead">We offer a bespoke and personalized experience for restaurants, club houses, offices, various formal and festival occasions and personal spaces.</p>
-                <p>With our in-depth knowledge of silk flowers, our love for details and floral artistry and our commitment to going an extra mile, you can be rest assured of the highest quality and a signature and unique package.</p>
-                <hr class="text-brand opacity-50 w-50">
-                
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h4><i class="bi bi-eye-fill text-brand me-2"></i>Vision</h4>
-                        <div class="expandable-wrapper">
-                            <div class="expandable-text" id="visionText">
-                                <p class="small mb-0">To define and customize floral artistry by making silk flowers the timeless choice for elegance, personalization, and sustainable beauty across every space and occasion.</p>
-                            </div>
+                <div class="swiper-slide hero-slide">
+                    <img src="images/image00002.jpeg" alt="">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <div class="slide-pre-title">Celebration</div>
+                            <div class="slide-title">Forever <span>moments</span></div>
+                            <div class="slide-desc">Weddings, events & milestones — everlasting beauty for your special day.</div>
+                            <a href="#" class="slide-btn">Discover occasions <i class="bi bi-arrow-right"></i></a>
                         </div>
-                        <button class="read-more-btn" onclick="toggleText('visionText', this)">
-                            read more <i class="bi bi-arrow-right-short"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-6" style="margin-top: 10px;">
-                        <h4><i class="bi bi-bullseye text-brand me-2"></i>Mission</h4>
-                        <div class="expandable-wrapper">
-                            <div class="expandable-text" id="missionText">
-                                <p class="small mb-0">We craft bespoke silk flower experiences that elevate restaurants, clubhouses, offices, events, and personal spaces. Guided by our deep expertise, love for detail, and commitment for going the extra mile, we deliver lasting floral artistry that inspires joy, sophistication, and trust.</p>
-                            </div>
-                        </div>
-                        <button class="read-more-btn" onclick="toggleText('missionText', this)">
-                            read more <i class="bi bi-arrow-right-short"></i>
-                        </button>
                     </div>
                 </div>
-
-                <a href="#" class="btn btn-outline-brand mt-3" id="viewFullGalleryBtn" onclick="toggleGallery(true); return false;">
-                    View Full Gallery
-                </a>
+                <div class="swiper-slide hero-slide">
+                    <img src="images/image00004.jpeg" alt="">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <div class="slide-pre-title">Interior</div>
+                            <div class="slide-title">Spatial <span>poetry</span></div>
+                            <div class="slide-desc">Transform your space with sustainable floral artistry that lasts.</div>
+                            <a href="#" class="slide-btn">View portfolio <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="row pdf-info">
-            <div class="col-12">
-                <p class="lead">With our in-depth knowledge of silk flowers, our love for details and floral artistry and our commitment to going an extra mile, you can be rest assured of the highest quality and a signature and unique package.</p>
-                
-                <div class="row">
-                    <div class="col-md-6 service-category">
-                        <ul class="service-list">
-                            <li><i class="bi bi-dot"></i><span>Wedding bouquets, centerpieces, and venue styling</span></li>
-                            <li><i class="bi bi-dot"></i><span>Birthday, anniversary, and milestone celebration décor</span></li>
-                            <li><i class="bi bi-dot"></i><span>Corporate event floral staging (conferences, launches, galas)</span></li>
-                            <li><i class="bi bi-dot"></i><span>Themed party floral accents (e.g., tropical, vintage, modern chic)</span></li>
-                            <li><i class="bi bi-dot"></i><span>Silk flower arches, canopies, and photo booth backdrops</span></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="col-md-6 service-category">
-                        <ul class="service-list">
-                            <li><i class="bi bi-dot"></i><span>Bespoke arrangements for living rooms, dining tables, and patios</span></li>
-                            <li><i class="bi bi-dot"></i><span>Long-lasting floral styling for home offices and study areas</span></li>
-                            <li><i class="bi bi-dot"></i><span>Seasonal home décor (spring blossoms, festive arrangements)</span></li>
-                            <li><i class="bi bi-dot"></i><span>Luxury silk flower gift sets and hampers</span></li>
-                            <li><i class="bi bi-dot"></i><span>Personalized floral artistry for private collections</span></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="row mt-3">
-                    <div class="col-md-6 service-category">
-                        <ul class="service-list">
-                            <li><i class="bi bi-dot"></i><span>Subscription-based floral refresh programs (monthly/quarterly updates)</span></li>
-                            <li><i class="bi bi-dot"></i><span>Custom design consultations for tailored arrangements</span></li>
-                            <li><i class="bi bi-dot"></i><span>Silk flower maintenance and refresh services</span></li>
-                            <li><i class="bi bi-dot"></i><span>Eco-conscious décor solutions (sustainable, reusable artistry)</span></li>
-                            <li><i class="bi bi-dot"></i><span>Artistic installations blending silk flowers with other design elements (lighting, sculpture, greenery)</span></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="col-md-6 service-category">
-                        <ul class="service-list">
-                            <li><i class="bi bi-dot"></i><span>Silk flower styling for photoshoots, film sets, and advertisements</span></li>
-                            <li><i class="bi bi-dot"></i><span>Branded floral displays for retail stores and product launches</span></li>
-                            <li><i class="bi bi-dot"></i><span>Collaborations with interior designers for permanent décor solutions</span></li>
-                            <li><i class="bi bi-dot"></i><span>Pop-up installations for exhibitions and trade shows</span></li>
-                        </ul>
+    <div class="container section-padding">
+        <div class="row g-5">
+            <div class="col-lg-5">
+                <div style="width: 80px; height: 3px; background: var(--gold); margin: 2rem 0;"></div>
+                <p class="lead">We offer a bespoke and personalized experience for restaurants, club houses, offices, various formal and festival occasions and personal spaces.</p>
+                <p>With our in-depth knowledge of silk flowers, our love for details and floral artistry and our commitment to going an extra mile, you can be rest assured of the highest quality and a signature and unique package.</p>
+                <a hidden href="#" class="slide-btn" style="display: inline-block; animation: none; opacity: 1; transform: none;">discover more</a>
+            </div>
+            <div class="col-lg-7">
+                <div class="vision-mission-card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4><i class="bi bi-eye-fill" style="color: var(--gold); margin-right: 0.5rem;"></i> Vision Statement</h4>
+                            <p class="small">To define and customize floral artistry by making silk flowers the timeless choice for elegance, personalization, and sustainable beauty across every space and occasion.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4><i class="bi bi-bullseye" style="color: var(--gold); margin-right: 0.5rem;"></i> Mission Statement</h4>
+                            <p class="small">We craft bespoke silk flower experiences that elevate restaurants, clubhouses, offices, events, and personal spaces. Guided by our deep expertise, love for detail, and commitment for going the extra mile, we deliver lasting floral artistry that inspires joy, sophistication, and trust.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-semibold">Floral <span style="color: var(--gold);">artistry</span></h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card">
+                    <h4>Events & Occasions</h4>
+                    <ul class="service-list">
+                        <li><i class="bi bi-dot"></i> Wedding bouquets, centerpieces, and venue styling</li>
+                        <li><i class="bi bi-dot"></i> Birthday, anniversary, and milestone celebration décor</li>
+                        <li><i class="bi bi-dot"></i> Corporate event floral staging (conferences, launches, galas)</li>
+                        <li><i class="bi bi-dot"></i> Themed party floral accents (e.g., tropical, vintage, modern chic)</li>
+                        <li><i class="bi bi-dot"></i> Silk flower arches, canopies, and photo booth backdrops</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card">
+                    <h4>Personal & Residential Spaces</h4>
+                    <ul class="service-list">
+                        <li><i class="bi bi-dot"></i> Bespoke arrangements for living rooms, dining tables, and patios</li>
+                        <li><i class="bi bi-dot"></i> Long-lasting floral styling for home offices and study areas</li>
+                        <li><i class="bi bi-dot"></i> Seasonal home décor (spring blossoms, festive arrangements)</li>
+                        <li><i class="bi bi-dot"></i> Luxury silk flower gift sets and hampers</li>
+                        <li><i class="bi bi-dot"></i> Personalized floral artistry for private collections</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card">
+                    <h4>Specialized Services</h4>
+                    <ul class="service-list">
+                        <li><i class="bi bi-dot"></i> Subscription-based floral refresh programs (monthly/quarterly updates)</li>
+                        <li><i class="bi bi-dot"></i> Custom design consultations for tailored arrangements</li>
+                        <li><i class="bi bi-dot"></i> Silk flower maintenance and refresh services</li>
+                        <li><i class="bi bi-dot"></i> Eco-conscious décor solutions (sustainable, reusable artistry)</li>
+                        <li><i class="bi bi-dot"></i> Artistic installations blending silk flowers with other design elements (lighting, sculpture, greenery)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card">
+                    <h4>Creative & Marketing</h4>
+                    <ul class="service-list">
+                        <li><i class="bi bi-dot"></i> Silk flower styling for photoshoots, film sets, and advertisements</li>
+                        <li><i class="bi bi-dot"></i> Branded floral displays for retail stores and product launches</li>
+                        <li><i class="bi bi-dot"></i> Collaborations with interior designers for permanent décor solutions</li>
+                        <li><i class="bi bi-dot"></i> Pop-up installations for exhibitions and trade shows</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
-<footer class="page-footer">
+<footer class="footer-modern" style="margin-top: 60px;">
     <div class="container">
-        <div class="footer-content">
-            <div class="footer-copy">
-                <i class="bi bi-c-circle"></i> 2026 Forever Silk Flowers · all rights reserved
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <span style="font-size: 1rem; color: var(--gold);">MAKE IT LAST FOREVER<span class="gold-accent">!</span></span>
             </div>
-            <div class="footer-tagline">
-                <i class="bi bi-flower2"></i> Make It Last Forever
+            <div class="col-md-4 text-center">
+                <a href="#" class="text-dark me-3"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="text-dark me-3"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="#" class="text-dark"><i class="bi bi-pinterest fs-4"></i></a>
             </div>
-            <div class="footer-social">
-                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+            <div class="col-md-4 text-end">
+                <small><i class="bi bi-c-circle" style="color: var(--gold);"></i> 2026 Forever Silk Flowers · all rights reserved</small>
             </div>
         </div>
     </div>
 </footer>
 
-<script>
-function toggleText(elementId, button) {
-    const textElement = document.getElementById(elementId);
-    const isExpanded = textElement.classList.contains('expanded');
-    
-    if (isExpanded) {
-        textElement.classList.remove('expanded');
-        button.innerHTML = 'read more <i class="bi bi-arrow-right-short"></i>';
-    } else {
-        textElement.classList.add('expanded');
-        button.innerHTML = 'read less <i class="bi bi-arrow-up-short"></i>';
-    }
-}
-
-function toggleGallery(showFull) {
-    const heroSection = document.getElementById('hero');
-    const rightContent = document.getElementById('rightHeroContent');
-    const backBtn = document.getElementById('backHomeBtn');
-    const viewBtn = document.getElementById('viewFullGalleryBtn');
-
-    if (showFull) {
-        rightContent.classList.add('d-none');
-        heroSection.classList.add('gallery-expanded');
-        backBtn.classList.remove('d-none');
-        viewBtn.style.display = 'none';
-    } else {
-        rightContent.classList.remove('d-none');
-        heroSection.classList.remove('gallery-expanded');
-        backBtn.classList.add('d-none');
-        viewBtn.style.display = 'inline-block';
-    }
-}
-</script>
-
-<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const heroSwiper = new Swiper('.hero-swiper', {
+        loop: true,
+        speed: 800,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+    });
+
+    const header = document.getElementById('mainHeader');
+    const headerContact = document.getElementById('headerContact');
+    let lastScrollTop = 0;
+    let scrollThreshold = 10;
+
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (Math.abs(currentScroll - lastScrollTop) > scrollThreshold) {
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                header.classList.add('hide');
+            } else {
+                header.classList.remove('hide');
+            }
+        }
+        
+        if (currentScroll > 150) {
+            headerContact.classList.add('hidden');
+            header.classList.add('compact');
+        } else {
+            headerContact.classList.remove('hidden');
+            header.classList.remove('compact');
+        }
+        
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }, false);
+
+    window.addEventListener('load', function() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > 150) {
+            headerContact.classList.add('hidden');
+            header.classList.add('compact');
+        }
+    });
+
+    const galleryImages = [
+        'images/image00001.jpeg',
+        'images/image00002.jpeg',
+        'images/image00003.jpeg',
+        'images/image00004.jpeg',
+        'images/image00005.jpeg',
+        'images/image00006.jpeg',
+        'images/image00007.jpeg',
+        'images/image00008.jpeg',
+        'images/image00009.jpeg',
+        'images/image00010.jpeg',
+        'images/image00011.jpeg',
+        'images/image00012.jpeg',
+        'images/image00013.jpeg',
+        'images/image00021.jpeg',
+        'images/image00015.jpeg',
+        'images/image00016.jpeg',
+        'images/image00017.jpeg',
+        'images/image00018.jpeg',
+        'images/image00019.jpeg',
+        'images/image00020.jpeg'
+    ];
+
+    const galleryGrid = document.getElementById('galleryGrid');
+    
+    galleryImages.forEach((src, index) => {
+        const col = document.createElement('div');
+        col.className = 'col-6 col-md-4 col-lg-3';
+        
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.setAttribute('onclick', `openImageView('${src}')`);
+        
+        const loader = document.createElement('div');
+        loader.className = 'image-loader';
+        loader.id = `loader-${index}`;
+        
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        loader.appendChild(spinner);
+        
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'gallery-img';
+        img.alt = `Gallery ${index + 1}`;
+        img.loading = 'lazy';
+        img.setAttribute('onload', `imageLoaded(${index})`);
+        
+        galleryItem.appendChild(loader);
+        galleryItem.appendChild(img);
+        col.appendChild(galleryItem);
+        galleryGrid.appendChild(col);
+    });
+
+    window.imageLoaded = function(index) {
+        const loader = document.getElementById(`loader-${index}`);
+        const img = document.querySelector(`.gallery-img[src="${galleryImages[index]}"]`);
+        if (loader) {
+            loader.classList.add('hidden');
+        }
+        if (img) {
+            img.classList.add('loaded');
+        }
+    };
+
+    function openImageView(imageSrc) {
+        const imageViewModal = new bootstrap.Modal(document.getElementById('imageViewModal'));
+        const modalImage = document.getElementById('largeImageView');
+        const modalLoader = document.getElementById('modalLoader');
+        
+        modalImage.style.opacity = '0';
+        modalImage.src = '';
+        modalLoader.classList.remove('hidden');
+        
+        imageViewModal.show();
+        
+        const img = new Image();
+        img.onload = function() {
+            modalImage.src = imageSrc;
+            modalImage.style.opacity = '1';
+            modalLoader.classList.add('hidden');
+            modalImage.classList.add('loaded');
+        };
+        img.src = imageSrc;
+    }
+
+    window.openImageView = openImageView;
+</script>
 </body>
 </html>
