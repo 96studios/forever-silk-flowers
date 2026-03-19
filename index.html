@@ -690,13 +690,13 @@
             padding: 1.5rem;
         }
 
-@font-face {
-    font-family: 'FlowerBudsMonogram';
-    src: url('/fonts/Flower-Buds-Monogram.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+        @font-face {
+            font-family: 'FlowerBudsMonogram';
+            src: url('/fonts/Flower-Buds-Monogram.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
 
         .display-5.fw-semibold:first-of-type::first-letter {
             font-family: 'FlowerBudsMonogram', cursive;
@@ -706,27 +706,226 @@
             margin-right: 3px; 
         }
 
-     
-.hero-slide .slide-pre-title,
-.hero-slide .slide-title,
-.hero-slide .slide-desc,
-.hero-slide .slide-btn {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: none; 
+        .hero-slide .slide-pre-title,
+        .hero-slide .slide-title,
+        .hero-slide .slide-desc,
+        .hero-slide .slide-btn {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: none;
+        }
+
+        .swiper-slide-active .slide-pre-title,
+        .swiper-slide-active .slide-title,
+        .swiper-slide-active .slide-desc,
+        .swiper-slide-active .slide-btn {
+            animation: fadeUp 0.8s forwards;
+        }
+
+        .swiper-slide-active .slide-pre-title { animation-delay: 0.2s; }
+        .swiper-slide-active .slide-title { animation-delay: 0.4s; }
+        .swiper-slide-active .slide-desc { animation-delay: 0.6s; }
+        .swiper-slide-active .slide-btn { animation-delay: 0.8s; }
+
+        @font-face {
+            font-family: 'AboveTheBeyondScript';
+            src: url('fonts/above-the-beyond-script.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .footer-script {
+            font-family: 'AboveTheBeyondScript', cursive;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            display: block;
+            margin-top: 1.5rem;
+            letter-spacing: 0.5px;
+            line-height: 2rem;
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .footer-script {
+                font-size: 1rem;
+                margin-top: 1rem;
+                line-height: 1.6rem;
+                max-width: 90%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .footer-script {
+                font-size: 0.95rem;
+                margin-top: 0.5rem;
+                line-height: 1.4rem;
+                white-space: nowrap; 
+                max-width: 100%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .footer-script {
+                font-size: 1rem;
+                margin-top: 0.5rem;
+                line-height: 1.5rem;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .footer-script {
+                font-size: 0.85rem;
+                margin-top: 1.25rem;
+                line-height: 1.8rem;
+            }
+        }
+
+    @media only screen 
+    and (min-width: 1024px) 
+    and (max-width: 1024px) 
+    and (min-height: 1366px) 
+    and (max-height: 1366px) {
+    
+    /* Adjust footer script for iPad Pro */
+    .footer-script {
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        line-height: 1.5rem;
+        white-space: normal; /* Allows wrapping if needed */
+        max-width: 95%;
+    }
+    
+    /* Fix header contact spacing */
+    .header-contact {
+        gap: 1.2rem;
+    }
+    
+    /* Adjust hero section for better fit */
+    .hero-section {
+        height: 60vh;
+        min-height: 520px;
+    }
+    
+    .slide-title {
+        font-size: clamp(3.5rem, 6vw, 4.5rem);
+    }
+    
+    .slide-content {
+        max-width: 600px;
+    }
+    
+    /* Gallery grid adjustment */
+    .modal-gallery-grid .modal-body {
+        padding: 1rem;
+    }
+    
+    /* Service cards adjustment */
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .service-card h4 {
+        font-size: 1.3rem;
+    }
+    
+    .service-list li {
+        font-size: 0.95rem;
+    }
+    
+    /* Vision mission card */
+    .vision-mission-card {
+        padding: 2rem;
+    }
+    
+    /* Container padding */
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 
-.swiper-slide-active .slide-pre-title,
-.swiper-slide-active .slide-title,
-.swiper-slide-active .slide-desc,
-.swiper-slide-active .slide-btn {
-    animation: fadeUp 0.8s forwards;
+/* iPad Pro 12.9" - 1024px width but different height */
+@media only screen 
+    and (min-width: 1024px) 
+    and (max-width: 1024px) 
+    and (min-height: 1366px) 
+    and (max-height: 1366px) {
+    
+    /* Same as above - this covers both iPad Pro models */
+    .footer-script {
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        line-height: 1.5rem;
+        white-space: normal;
+        max-width: 95%;
+    }
+    
+    .header-contact {
+        gap: 1.2rem;
+    }
+    
+    .hero-section {
+        height: 60vh;
+        min-height: 520px;
+    }
+    
+    .slide-title {
+        font-size: clamp(3.5rem, 6vw, 4.5rem);
+    }
+    
+    .slide-content {
+        max-width: 600px;
+    }
+    
+    .modal-gallery-grid .modal-body {
+        padding: 1rem;
+    }
+    
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .service-card h4 {
+        font-size: 1.3rem;
+    }
+    
+    .service-list li {
+        font-size: 0.95rem;
+    }
+    
+    .vision-mission-card {
+        padding: 2rem;
+    }
+    
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 
-.swiper-slide-active .slide-pre-title { animation-delay: 0.2s; }
-.swiper-slide-active .slide-title { animation-delay: 0.4s; }
-.swiper-slide-active .slide-desc { animation-delay: 0.6s; }
-.swiper-slide-active .slide-btn { animation-delay: 0.8s; }
+/* iPad Pro in landscape mode (1366 x 1024) */
+@media only screen 
+    and (min-width: 1366px) 
+    and (max-width: 1366px) 
+    and (min-height: 1024px) 
+    and (max-height: 1024px) {
+    
+    .hero-section {
+        height: 70vh;
+        min-height: 500px;
+    }
+    
+    .slide-overlay {
+        padding-left: 8%;
+    }
+    
+    .footer-script {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        line-height: 1.4rem;
+        white-space: nowrap;
+    }
+}
     </style>
 </head>
 <body>
@@ -795,7 +994,7 @@
                             <div class="slide-pre-title">Sustainable floral artistry</div>
                             <div class="slide-title">MAKE IT <span>LAST FOREVER!</span></div>
                             <div class="slide-desc">Where silk meets sophistication — bespoke floral designs for the discerning eye.</div>
-                            <a href="#" class="slide-btn">Explore collection <i class="bi bi-arrow-right"></i></a>
+                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -806,7 +1005,7 @@
                             <div class="slide-pre-title">Celebration</div>
                             <div class="slide-title">Forever <span>moments</span></div>
                             <div class="slide-desc">Weddings, events & milestones — everlasting beauty for your special day.</div>
-                            <a href="#" class="slide-btn">Discover occasions <i class="bi bi-arrow-right"></i></a>
+                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -817,7 +1016,7 @@
                             <div class="slide-pre-title">Interior</div>
                             <div class="slide-title">Spatial <span>poetry</span></div>
                             <div class="slide-desc">Transform your space with sustainable floral artistry that lasts.</div>
-                            <a href="#" class="slide-btn">View portfolio <i class="bi bi-arrow-right"></i></a>
+                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -830,7 +1029,7 @@
             <div class="col-lg-5">
                 <div style="width: 80px; height: 3px; background: var(--gold); margin: 2rem 0;"></div>
                 <p class="lead">We offer a bespoke and personalized experience for restaurants, club houses, offices, various formal and festival occasions and personal spaces.</p>
-                <p>With our in-depth knowledge of silk flowers, our love for details and floral artistry and our commitment to going an extra mile, you can be rest assured of the highest quality and a signature and unique package.</p>
+                <p>With our in-depth knowledge of silk flowers, our love for details and floral artistry and our commitment to going an extra mile, you can be assured of the highest quality and a signature and unique package.</p>
                 <a hidden href="#" class="slide-btn" style="display: inline-block; animation: none; opacity: 1; transform: none;">discover more</a>
             </div>
             <div class="col-lg-7">
@@ -911,11 +1110,11 @@
         <div class="row align-items-center">
             <div class="col-md-4">
                 <span style="font-size: 1rem; color: var(--gold);">MAKE IT LAST FOREVER<span class="gold-accent">!</span></span>
+                <span class="footer-script">Sustainable and Environmentally-Friendly Floral Artistry</span>
             </div>
             <div class="col-md-4 text-center">
                 <a href="#" class="text-dark me-3"><i class="bi bi-facebook fs-4"></i></a>
                 <a href="#" class="text-dark me-3"><i class="bi bi-instagram fs-4"></i></a>
-                <a href="#" class="text-dark"><i class="bi bi-pinterest fs-4"></i></a>
             </div>
             <div class="col-md-4 text-end">
                 <small><i class="bi bi-c-circle" style="color: var(--gold);"></i> 2026 Forever Silk Flowers · all rights reserved</small>
@@ -1058,6 +1257,14 @@
     }
 
     window.openImageView = openImageView;
+
+    function openGalleryModal(event) {
+        event.preventDefault();
+        const galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
+        galleryModal.show();
+    }
+
+    window.openGalleryModal = openGalleryModal;
 </script>
 </body>
 </html>
