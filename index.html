@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forever Silk Flowers</title>
-    <!-- Bootstrap 5 + icons -->
+    <title>Forever Silk Flowers - Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Swiper slider -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
             --gold: #d4af37;
             --gold-dark: #b49450;
@@ -21,8 +17,10 @@
             --cream: #FDFBF7;
             --pure-white: #ffffff;
             --soft-border: rgba(212, 175, 55, 0.2);
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background: var(--cream);
@@ -31,26 +29,13 @@
             overflow-x: hidden;
             width: 100%;
         }
-
-        body {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.03"><path d="M50,50 C30,50 15,70 25,90 C10,105 20,130 40,130 C45,150 70,155 85,140 C100,155 125,150 130,130 C150,130 160,105 145,90 C155,70 140,50 120,50 C105,30 80,30 65,45 C55,35 40,40 40,55 C35,60 40,70 50,70 C60,70 65,60 60,50" fill="%23d4af37"/><path d="M150,150 C135,150 125,165 132,178 C120,190 135,200 148,192 C155,205 175,200 180,185 C195,185 200,170 190,160 C200,145 185,135 170,140 C165,125 150,130 150,145 C145,150 140,150 145,158" fill="%23d4af37"/></svg>');
-            background-repeat: repeat;
-            background-size: 400px 400px;
-        }
-
         h1, h2, h3, h4, .nav-link, .gold-text {
             font-family: "Space Grotesk", sans-serif;
             font-weight: 500;
             letter-spacing: -0.02em;
         }
-
-        html {
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
         .page-header {
-            background: #000000;  
+            background: #000000;
             padding: 1rem 0;
             position: fixed;
             top: 0;
@@ -59,216 +44,523 @@
             z-index: 1000;
             transition: transform 0.3s ease, padding 0.3s ease;
         }
-
-        .page-header.hide {
-            transform: translateY(-100%);
+        .page-header.hide { transform: translateY(-100%); }
+        .logo-img { height: 50px; width: auto; display: block; }
+        .header-actions { display: flex; align-items: center; gap: 1.5rem; }
+        .header-actions .icon-btn {
+            color: var(--gold);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: none;
+            border: none;
+            padding: 0;
         }
-
-        .page-header.compact {
-            padding: 0.5rem 0;
+        .header-actions .icon-btn:hover { color: white; transform: scale(1.1); }
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gold);
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 50%;
+            min-width: 18px;
+            text-align: center;
         }
-
-        .logo-img {
-            height: 50px;
-            width: auto;
-            display: block;
-            transition: height 0.3s ease;
-        }
-
-        .page-header.compact .logo-img {
-            height: 40px;
-        }
-
-        .header-contact {
-            display: flex;
-            gap: 2rem;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-            transition: opacity 0.3s ease, transform 0.3s ease, margin 0.3s ease, height 0.3s ease;
-            opacity: 1;
-            transform: translateY(0);
-            height: auto;
-            margin: 0;
-        }
-
-        .header-contact.hidden {
-            opacity: 0;
-            transform: translateY(-10px);
-            margin: 0;
-            height: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .header-contact-item {
-            display: flex;
+        .user-badge {
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             color: var(--gold);
-            text-decoration: none;
-            white-space: nowrap;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
-        .header-contact-item i {
-            color: var(--gold);
+        .user-badge:hover { color: white; }
+        .admin-badge {
+            background: var(--gold);
+            color: #000;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-
         .hero-section {
             position: relative;
-            height: 65vh;
-            min-height: 560px;
+            height: 50vh;
+            min-height: 400px;
             overflow: hidden;
             margin-top: 0;
             border-radius: 0 0 40px 0px;
         }
-
-        .hero-swiper {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .hero-slide {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .hero-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.7) saturate(1.2);
-        }
-
+        .hero-swiper { width: 100%; height: 100%; position: relative; }
+        .hero-slide { position: relative; width: 100%; height: 100%; }
+        .hero-slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7) saturate(1.2); }
         .slide-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, 
-                rgba(0, 0, 0, 0.95) 0%,
-                rgba(0,0,0,0.7) 25%,
-                rgba(0,0,0,0.3) 60%,
-                rgba(0,0,0,0.4) 100%
-            );
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0,0,0,0.7) 25%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.4) 100%);
             display: flex;
             align-items: center;
             padding-left: 10%;
         }
-
-        .slide-content {
-            max-width: 700px;
-            color: white;
+        .slide-content { max-width: 700px; color: white; }
+        .slide-pre-title { font-size: 1rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 1.5rem; color: var(--gold); font-weight: 300; }
+        .slide-title { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 600; line-height: 1; margin-bottom: 1.5rem; }
+        @font-face {
+            font-family: 'HenriDidot';
+            src: url('/fonts/HenriDidot.otf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
-
-        .slide-pre-title {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            margin-bottom: 1.5rem;
+        .slide-title span {
             color: var(--gold);
-            font-weight: 300;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s forwards 0.2s;
+            font-family: 'HenriDidot', serif;
+            font-style: normal;
+            display: block;
+            font-size: 0.8em;
         }
-
-        .slide-title {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 600;
-            line-height: 1;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s forwards 0.4s;
-        }
-
-    @font-face {
-        font-family: 'HenriDidot';
-        src: url('/fonts/HenriDidot.otf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    .slide-title span {
-        color: var(--gold);
-        font-family: 'HenriDidot', serif;
-        font-style: normal;
-        display: block;
-        font-size: 0.8em;
-    }
-        .slide-desc {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 500px;
-            margin-bottom: 3.5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s forwards 0.6s;
-        }
-
         .slide-btn {
+            margin-top: 20px;
             display: inline-flex;
             align-items: center;
             gap: 1rem;
             background: var(--gold);
             color: var(--charcoal);
             text-decoration: none;
-            padding: 1rem 2.5rem;
+            padding: 0.8rem 2rem;
             border-radius: 0 50px 50px 0;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             border: none;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s forwards 0.8s;
         }
-
-        .slide-btn:hover {
-            gap: 2rem;
+        .slide-btn:hover { gap: 2rem; background: white; color: var(--charcoal); }
+        .section-padding { padding: 3rem 0; }
+        .product-card {
             background: white;
-            color: var(--charcoal);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--soft-border);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .product-card:hover { border-color: var(--gold); }
+        .product-card.sale { border-color: var(--danger); }
+        .product-card.sale::before {
+            content: 'SALE';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 2;
         }
-
-        .hero-nav {
+        .product-image { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f5f5f5; }
+        .product-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .product-price { font-size: 1.2rem; font-weight: 700; color: var(--gold-dark); margin-bottom: 0.3rem; }
+        .product-price .original-price { text-decoration: line-through; color: #999; font-size: 0.9rem; font-weight: 400; margin-left: 0.5rem; }
+        .product-description { font-size: 0.85rem; color: #666; margin-bottom: 0.8rem; flex: 1; }
+        .product-actions { display: flex; gap: 0.5rem; margin-top: auto; }
+        .btn-add-cart { background: var(--charcoal); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; flex: 1; }
+        .btn-add-cart:hover { background: var(--gold); color: var(--charcoal); }
+        .btn-view-product { background: transparent; border: 1px solid var(--soft-border); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; transition: all 0.3s ease; }
+        .btn-view-product:hover { border-color: var(--gold); background: var(--gold); color: white; }
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
             display: none;
         }
-
-        .folder-icon {
+        .cart-overlay.active { display: block; }
+        .cart-panel {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1001;
-            width: 60px;
-            height: 60px;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100vw;
+            height: 100%;
+            background: white;
+            z-index: 2001;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-panel.open { right: 0; }
+        .cart-header { padding: 1.2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #000; color: white; }
+        .cart-header h5 { margin: 0; color: var(--gold); }
+        .cart-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .cart-body { flex: 1; overflow-y: auto; padding: 1.2rem; }
+        .cart-item { display: flex; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid #f0f0f0; align-items: center; }
+        .cart-item-image { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+        .cart-item-details { flex: 1; }
+        .cart-item-title { font-weight: 600; font-size: 0.9rem; }
+        .cart-item-price { color: var(--gold-dark); font-weight: 600; font-size: 0.9rem; }
+        .cart-item-quantity { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; }
+        .cart-item-quantity button { background: #f0f0f0; border: none; width: 24px; height: 24px; border-radius: 50%; font-weight: 700; cursor: pointer; font-size: 0.8rem; }
+        .cart-item-quantity button:hover { background: var(--gold); color: white; }
+        .cart-item-quantity span { min-width: 25px; text-align: center; font-weight: 600; }
+        .cart-item-remove { background: none; border: none; color: #999; cursor: pointer; font-size: 1.1rem; }
+        .cart-item-remove:hover { color: var(--danger); }
+        .cart-footer { padding: 1.2rem; border-top: 1px solid #eee; background: #fafafa; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; }
+        .cart-total-amount { color: var(--gold-dark); }
+        .btn-checkout { width: 100%; padding: 0.8rem; background: var(--gold); color: var(--charcoal); border: none; border-radius: 8px; font-weight: 700; transition: all 0.3s ease; }
+        .btn-checkout:hover { background: var(--gold-dark); transform: scale(1.02); }
+        .empty-cart { text-align: center; padding: 2rem 0; color: #999; }
+        .empty-cart i { font-size: 3rem; margin-bottom: 0.5rem; display: block; }
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .filter-section .form-control,
+        .filter-section .form-select {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+        .filter-section .form-control:focus,
+        .filter-section .form-select:focus {
+            border-color: var(--gold);
+        }
+        .pagination-custom {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .pagination-custom button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .pagination-custom button:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--charcoal);
+            border-color: var(--gold);
+        }
+        .pagination-custom button.active {
+            background: var(--charcoal);
+            color: white;
+            border-color: var(--charcoal);
+        }
+        .pagination-custom button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .admin-panel .nav-tabs .nav-link {
+            color: var(--charcoal);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .admin-panel .nav-tabs .nav-link.active {
+            background: var(--gold);
+            color: var(--charcoal);
+        }
+        .admin-panel .nav-tabs .nav-link:hover:not(.active) {
+            background: #f5f5f5;
+        }
+        .admin-form .form-control,
+        .admin-form .form-select {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 0.6rem 1rem;
+        }
+        .admin-form .form-control:focus,
+        .admin-form .form-select:focus {
+            border-color: var(--gold);
+        }
+        .admin-table { font-size: 0.9rem; }
+        .admin-table th { background: #f8f8f8; font-weight: 600; }
+        .admin-table .btn-sm { padding: 0.2rem 0.6rem; font-size: 0.8rem; }
+        .badge-sale { background: var(--danger); color: white; }
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 3000;
+        }
+        .toast-custom {
+            background: var(--charcoal);
+            color: white;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 0.5rem;
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 250px;
+        }
+        .toast-custom.success { border-left: 4px solid var(--success); }
+        .toast-custom.error { border-left: 4px solid var(--danger); }
+        .toast-custom.warning { border-left: 4px solid var(--warning); }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .auth-modal .modal-content {
+            border-radius: 16px;
+            border: none;
+        }
+        .auth-modal .modal-body { padding: 1.5rem 2rem 2rem; }
+        .auth-modal .form-control {
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+        }
+        .auth-modal .form-control:focus {
+            border-color: var(--gold);
+        }
+        .auth-modal .btn-primary {
+            background: var(--charcoal);
+            border: none;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .auth-modal .btn-primary:hover {
+            background: var(--gold);
+            color: var(--charcoal);
+        }
+        .auth-switch {
+            color: var(--gold);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .auth-switch:hover { color: var(--gold-dark); }
+        .product-detail-modal .modal-content {
+            border-radius: 16px;
+            border: none;
+        }
+        .product-detail-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .product-detail-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+        .profile-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .profile-sidebar {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: #000000;
+            background: var(--gold);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+        }
+        .profile-tab-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
             border: none;
+            background: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+            color: var(--charcoal);
         }
-
-        .folder-icon:hover {
-            transform: scale(1.1);
-            background: var(--gold);
-            color: #000000;
+        .profile-tab-btn:hover { background: var(--gold); color: #000; }
+        .profile-tab-btn.active { background: var(--gold); color: #000; }
+        .profile-tab-btn i { margin-right: 10px; }
+        .profile-back-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+        .profile-back-btn:hover { color: var(--gold-dark); }
+        .profile-content { padding: 1rem; }
+        .profile-tab-content { display: none; }
+        .profile-tab-content.active { display: block; }
+        .order-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .address-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .address-form-container {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid var(--soft-border);
+        }
+        .address-form-container .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .address-form-container .form-control {
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+        }
+        .address-form-container .form-control:focus {
+            border-color: var(--gold);
+        }
+        .address-section-title {
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .address-section-title i { color: var(--gold); margin-right: 0.5rem; }
+        .address-display {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-top: 0.5rem;
+        }
+        .address-display p { margin-bottom: 0.25rem; }
+        .same-as-checkbox {
+            margin: 1rem 0;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .same-as-checkbox .form-check-input:checked {
+            background-color: var(--gold);
+            border-color: var(--gold);
+        }
+        @media (max-width: 991px) {
+            .hero-section { height: 40vh; min-height: 350px; }
+            .cart-panel { width: 380px; }
+        }
+        @media (max-width: 768px) {
+            .hero-section { height: 45vh; min-height: 320px; }
+            .slide-overlay { padding-left: 5%; padding-right: 5%; align-items: flex-end; padding-bottom: 15%; }
+            .slide-content { max-width: 100%; }
+            .slide-title { font-size: clamp(2rem, 8vw, 3rem); }
+            .cart-panel { width: 100%; right: -100%; }
+            .filter-section .row > div { margin-bottom: 0.5rem; }
+            .admin-panel { padding: 1rem; }
+            .admin-panel .nav-tabs .nav-link { padding: 0.5rem 1rem; font-size: 0.85rem; }
+            body { padding-top: 70px; }
+            .logo-img { height: 40px; }
+        }
+        @media (max-width: 576px) {
+            .hero-section { min-height: 280px; }
+            .slide-btn { padding: 0.6rem 1.5rem; font-size: 0.7rem; }
+            .product-detail-image { height: 200px; }
+            .admin-table { font-size: 0.75rem; }
+            .admin-table .btn-sm { font-size: 0.7rem; padding: 0.15rem 0.4rem; }
+            .auth-modal .modal-body { padding: 1rem; }
+        }
+        @font-face {
+            font-family: 'AboveTheBeyondScript';
+            src: url('fonts/above-the-beyond-script.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        .footer-script {
+            font-family: 'AboveTheBeyondScript', cursive;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            display: block;
+            margin-top: 1.5rem;
+            letter-spacing: 0.5px;
+            line-height: 2rem;
+        }
+        .footer-modern {
+            background: white;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--soft-border);
+            margin-top: 40px;
+        }
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            display: none;
+        }
+        .spinner-overlay.active { display: flex; }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gold);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .address-actions { margin-top: 0.5rem; }
+        .address-actions .btn { margin-right: 0.5rem; }
 
         .section-padding {
             padding: 5rem 0;
@@ -323,843 +615,608 @@
             }
         }
 
-        .vision-mission-card {
-            padding: 2.5rem;
-            border-left: 4px solid var(--gold);
-        }
-
-        .service-card {
-            background: white;
-            padding: 2rem;
-            height: 100%;
-            border: 1px solid var(--soft-border);
-            transition: 0.3s;
-        }
-        .service-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-5px);
-        }
-        .service-card i {
-            color: var(--gold);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .service-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-        .service-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--soft-border);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .service-list li i {
-            font-size: 0.5rem;
-            margin-bottom: 0;
-        }
-
-        .footer-modern {
-            background: white;
-            padding: 1rem 0;
-            border-top: 1px solid var(--soft-border);
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        @media (max-width: 1199px) {
-            .slide-overlay { padding-left: 6%; }
-            .slide-content { max-width: 600px; }
-        }
-
-        @media (max-width: 991px) {
-            .hero-section { height: 60vh; min-height: 480px; }
-            .slide-content { max-width: 550px; }
-            .slide-title { font-size: clamp(2.8rem, 7vw, 4.5rem); }
-            .header-contact { gap: 1.5rem; }
-            .header-contact-item { white-space: normal; }
-            .vision-mission-card { padding: 2rem; }
-            body { padding-top: 70px; }
-            
-            .folder-icon {
-                width: 55px;
-                height: 55px;
-                font-size: 1.6rem;
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-section { height: 70vh; min-height: 480px; }
-            .slide-overlay { padding-left: 5%; padding-right: 5%; align-items: flex-end; padding-bottom: 15%; }
-            .slide-content { max-width: 100%; }
-            .slide-title { font-size: clamp(2.5rem, 10vw, 4rem); }
-            .slide-desc { font-size: 1.1rem; }
-            
-            .page-header .row {
-                align-items: flex-start;
-            }
-            
-            .header-contact { 
-                justify-content: flex-end;
-                margin-top: 0;
-                padding-top: 0;
-            }
-            
-            .page-header .col-md-4, 
-            .page-header .col-md-8 { 
-                text-align: left; 
-            }
-            
-            .page-header .col-12 {
-                align-self: flex-start;
-            }
-            
-            .section-padding { padding: 3rem 0; }
-            
-            .vision-mission-card .col-md-6:first-child { margin-bottom: 1.5rem; }
-            
-            .footer-modern .row > div { 
-                text-align: center !important; 
-                margin-bottom: 1rem;
-            }
-            .footer-modern .col-md-4.text-end { text-align: center !important; }
-            
-            .container {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-            
-            .folder-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
-            
-            .page-header.compact {
-                padding: 0.3rem 0;
-            }
-            
-            .page-header.compact .logo-img {
-                height: 35px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-section { min-height: 440px; }
-            .slide-overlay { padding-bottom: 25%; }
-            .slide-title span { display: inline-block; margin-left: 0.2rem; }
-            .slide-btn { padding: 0.8rem 1.8rem; font-size: 0.8rem; }
-            
-            .page-header .row {
-                align-items: flex-start;
-            }
-            
-            .header-contact { 
-                flex-direction: column; 
-                gap: 0.4rem; 
-                align-items: flex-end;
-                justify-content: flex-start;
-                margin-top: 0;
-                padding-top: 0;
-            }
-            
-            .header-contact-item { 
-                white-space: nowrap; 
-                font-size: 0.7rem;
-                text-align: right;
-            }
-            
-            .vision-mission-card { padding: 1.5rem; }
-            
-            .service-card { padding: 1.5rem; }
-            
-            h2 { font-size: 2.2rem !important; }
-            
-            .container {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-            
-            body { padding-top: 60px; }
-            .logo-img { height: 40px; }
-            
-            .folder-icon {
-                width: 48px;
-                height: 48px;
-                font-size: 1.4rem;
-                bottom: 1rem;
-                right: 1rem;
-            }
-            
-            .page-header.compact .logo-img {
-                height: 32px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .slide-title { font-size: clamp(2rem, 8vw, 2.8rem); }
-            .slide-desc { font-size: 1rem; }
-            
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .folder-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 1.3rem;
-                bottom: 0.8rem;
-                right: 0.8rem;
-            }
-            
-            .header-contact-item {
-                font-size: 0.7rem;
-            }
-        }
-
-        .gallery-item {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1/1;
-            cursor: pointer;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            background-color: #f5f5f5;
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-            opacity: 0;
-        }
-
-        .gallery-img.loaded {
-            opacity: 1;
-        }
-
-        .image-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
-            z-index: 1;
-        }
-
-        .image-loader.hidden {
-            display: none;
-        }
-
-        .image-loader .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--gold);
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
-            border-color: var(--gold);
-        }
-
-        .gallery-item:hover .gallery-img.loaded {
-            transform: scale(1.05);
-        }
-
-        .view-icon {
-            display: none;
-        }
-
-        .image-view-modal .modal-dialog {
-            max-width: 100vw;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-
-        .image-view-modal .modal-content {
-            background: #000000 !important;
-            border: none;
-            border-radius: 0;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        .image-view-modal .modal-body {
-            padding: 0;
-            text-align: center;
-            background: #080808 !important;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .image-view-modal img {
-            max-width: 100%;
-            max-height: 90vh;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            background: #000000;
-            border-radius: 30px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .image-view-modal img.loaded {
-            opacity: 1;
-        }
-
-        .modal-loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(212, 175, 55, 0.3);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            z-index: 1;
-        }
-
-        .modal-loader.hidden {
-            display: none;
-        }
-
-        .image-view-modal .btn-close {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1060;
-            background-color: rgba(255,255,255,0.2);
-            padding: 10px;
-            border-radius: 50%;
-            opacity: 0.8;
-            filter: invert(1) grayscale(100%) brightness(200%);
-        }
-
-        .image-view-modal .btn-close:hover {
-            opacity: 1;
-            background-color: rgba(255,255,255,0.3);
-        }
-
-        .modal-gallery-grid .modal-body {
-            padding: 1.5rem;
-        }
-
-        @font-face {
-            font-family: 'FlowerBudsMonogram';
-            src: url('/fonts/Flower-Buds-Monogram.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        .display-5.fw-semibold:first-of-type::first-letter {
-            font-family: 'FlowerBudsMonogram', cursive;
-            font-size: 0.7em; 
-            font-weight: normal;
-            color: var(--gold); 
-            margin-right: 3px; 
-        }
-
-        .hero-slide .slide-pre-title,
-        .hero-slide .slide-title,
-        .hero-slide .slide-desc,
-        .hero-slide .slide-btn {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: none;
-        }
-
-        .swiper-slide-active .slide-pre-title,
-        .swiper-slide-active .slide-title,
-        .swiper-slide-active .slide-desc,
-        .swiper-slide-active .slide-btn {
-            animation: fadeUp 0.8s forwards;
-        }
-
-        .swiper-slide-active .slide-pre-title { animation-delay: 0.2s; }
-        .swiper-slide-active .slide-title { animation-delay: 0.4s; }
-        .swiper-slide-active .slide-desc { animation-delay: 0.6s; }
-        .swiper-slide-active .slide-btn { animation-delay: 0.8s; }
-
-        @font-face {
-            font-family: 'AboveTheBeyondScript';
-            src: url('fonts/above-the-beyond-script.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        .footer-script {
-            font-family: 'AboveTheBeyondScript', cursive;
-            font-size: 0.9rem;
-            color: var(--charcoal);
-            display: block;
-            margin-top: 1.5rem;
-            letter-spacing: 0.5px;
-            line-height: 2rem;
-        }
-
-        @media (min-width: 768px) and (max-width: 991px) {
-            .footer-script {
-                font-size: 1rem;
-                margin-top: 1rem;
-                line-height: 1.6rem;
-                max-width: 90%;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .footer-script {
-                font-size: 0.95rem;
-                margin-top: 0.5rem;
-                line-height: 1.4rem;
-                white-space: nowrap; 
-                max-width: 100%;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            .footer-script {
-                font-size: 1rem;
-                margin-top: 0.5rem;
-                line-height: 1.5rem;
-            }
-        }
-
-        @media (max-width: 575px) {
-            .footer-script {
-                font-size: 0.85rem;
-                margin-top: 1.25rem;
-                line-height: 1.8rem;
-            }
-        }
-
-    @media only screen 
-    and (min-width: 1024px) 
-    and (max-width: 1024px) 
-    and (min-height: 1366px) 
-    and (max-height: 1366px) {
-    
-    .footer-script {
-        font-size: 0.6rem;
-        margin-top: 0.75rem;
-        line-height: 1.5rem;
-        white-space: normal;
-        max-width: 95%;
-    }
-    
-    .header-contact {
-        gap: 1.2rem;
-    }
-    
-    .hero-section {
-        height: 60vh;
-        min-height: 520px;
-    }
-    
-    .slide-title {
-        font-size: clamp(3.5rem, 6vw, 4.5rem);
-    }
-    
-    .slide-content {
-        max-width: 600px;
-    }
-    
-    .modal-gallery-grid .modal-body {
-        padding: 1rem;
-    }
-    
-    .service-card {
-        padding: 1.5rem;
-    }
-    
-    .service-card h4 {
-        font-size: 1.3rem;
-    }
-    
-    .service-list li {
-        font-size: 0.95rem;
-    }
-    
-    .vision-mission-card {
-        padding: 2rem;
-    }
-    
-    .container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-}
-
-@media only screen 
-    and (min-width: 1024px) 
-    and (max-width: 1024px) 
-    and (min-height: 1366px) 
-    and (max-height: 1366px) {
-    
-    .footer-script {
-        font-size: 0.9rem;
-        margin-top: 0.75rem;
-        line-height: 1.5rem;
-        white-space: normal;
-        max-width: 95%;
-    }
-    
-    .header-contact {
-        gap: 1.2rem;
-    }
-    
-    .hero-section {
-        height: 60vh;
-        min-height: 520px;
-    }
-    
-    .slide-title {
-        font-size: clamp(3.5rem, 6vw, 4.5rem);
-    }
-    
-    .slide-content {
-        max-width: 600px;
-    }
-    
-    .modal-gallery-grid .modal-body {
-        padding: 1rem;
-    }
-    
-    .service-card {
-        padding: 1.5rem;
-    }
-    
-    .service-card h4 {
-        font-size: 1.3rem;
-    }
-    
-    .service-list li {
-        font-size: 0.95rem;
-    }
-    
-    .vision-mission-card {
-        padding: 2rem;
-    }
-    
-    .container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-}
-
-@media only screen 
-    and (min-width: 1366px) 
-    and (max-width: 1366px) 
-    and (min-height: 1024px) 
-    and (max-height: 1024px) {
-    
-    .hero-section {
-        height: 70vh;
-        min-height: 500px;
-    }
-    
-    .slide-overlay {
-        padding-left: 8%;
-    }
-    
-    .footer-script {
-        font-size: 1rem;
-        margin-top: 0.5rem;
-        line-height: 1.4rem;
-        white-space: nowrap;
-    }
-}
-
-@media only screen and (min-width: 1200px) and (max-width: 1399px) {
-    
-    .footer-script {
-        font-size: 0.80rem;
-        margin-top: 0.5rem;
-        line-height: 1.4rem;
-        white-space: nowrap;
-    }
-    
-    .header-contact {
-        gap: 1.5rem;
-    }
-    
-    .hero-section {
-        height: 65vh;
-        min-height: 540px;
-    }
-    
-    .slide-title {
-        font-size: clamp(4rem, 7vw, 5rem);
-    }
-    
-    .slide-content {
-        max-width: 650px;
-    }
-    
-    .container {
-        max-width: 1140px;
-    }
-    
-    .service-card {
-        padding: 1.8rem;
-    }
-    
-    .modal-gallery-grid .modal-body {
-        padding: 1.25rem;
-    }
-    
-    .vision-mission-card {
-        padding: 2.2rem;
-    }
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
-    
-    .footer-script {
-        font-size: 0.7rem;
-        margin-top: 0.6rem;
-        line-height: 1.5rem;
-        white-space: nowrap;
-    }
-    
-    .header-contact {
-        gap: 1.2rem;
-    }
-    
-    .header-contact-item {
-        font-size: 0.9rem;
-    }
-    
-    .hero-section {
-        height: 60vh;
-        min-height: 500px;
-    }
-    
-    .slide-title {
-        font-size: clamp(3.5rem, 6vw, 4.2rem);
-    }
-    
-    .slide-content {
-        max-width: 550px;
-    }
-    
-    .container {
-        max-width: 960px;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-    
-    .row.g-4 {
-        margin-left: -0.5rem;
-        margin-right: -0.5rem;
-    }
-    
-    .row.g-4 > [class*="col-"] {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-    
-    .service-card {
-        padding: 1.8rem 1.5rem;
-        width: 100%;
-    }
-    
-    .col-lg-3 {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-    
-    .service-list li {
-        font-size: 0.95rem;
-        padding: 0.4rem 0;
-    }
-    
-    .vision-mission-card {
-        padding: 2rem;
-    }
-    
-    .col-lg-5, .col-lg-7 {
-        width: 100%;
-    }
-    
-    .col-lg-5 {
-        margin-bottom: 2rem;
-    }
-    
-    .modal-gallery-grid .modal-body {
-        padding: 1rem;
-    }
-    
-    .folder-icon {
-        width: 55px;
-        height: 55px;
-        font-size: 1.6rem;
-        bottom: 1.5rem;
-        right: 1.5rem;
-    }
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .service-card h4 {
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-    }
-    
-    .container {
-        max-width: 960px;
-        width: 100%;
-    }
-    
-    .row.g-4 {
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-    }
-    
-    .col-lg-3 {
-        width: 50%;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-}
     </style>
 </head>
 <body>
 
+<div class="spinner-overlay" id="spinnerOverlay">
+    <div class="spinner"></div>
+</div>
+
 <header class="page-header" id="mainHeader">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-12 col-md-4 text-center text-md-start">
+            <div class="col-6 col-md-4">
                 <img src="logo-02.svg" class="logo-img" alt="Forever Silk Flowers">
             </div>
-            <div class="col-12 col-md-8">
-                <div class="header-contact text-md-end" id="headerContact">
-                    <span class="header-contact-item"><i class="bi bi-telephone"></i> +27 83 492 9506</span>
-                    <span class="header-contact-item"><i class="bi bi-envelope"></i> info@foreversilkflowers.co.za</span>
+            <div class="col-6 col-md-8">
+                <div class="d-flex justify-content-end align-items-center gap-3">
+                    <div class="header-actions">
+                        <button class="icon-btn" id="adminToggleBtn" onclick="toggleAdminPanel()" style="display:none;" title="Admin Panel">
+                            <i class="bi bi-speedometer2"></i>
+                        </button>
+                        <button class="icon-btn" onclick="toggleAuthModal('login')" id="authBtn" title="Account">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <span class="user-badge" id="userBadge" style="display:none;" onclick="showProfile()">
+                            <i class="bi bi-person-check"></i>
+                            <span id="userName">User</span>
+                            <span class="admin-badge" id="adminBadge" style="display:none;">Admin</span>
+                        </span>
+                        <button class="icon-btn" onclick="toggleCart()" title="Cart">
+                            <i class="bi bi-bag"></i>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<button class="folder-icon" title="Gallery" data-bs-toggle="modal" data-bs-target="#galleryModal">
-    <i class="bi bi-folder2-open"></i>
-</button>
+<div class="toast-container" id="toastContainer"></div>
 
-<div class="modal fade modal-gallery-grid" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+        <h5><i class="bi bi-bag"></i> Your Cart</h5>
+        <button class="cart-close" onclick="toggleCart()">&times;</button>
+    </div>
+    <div class="cart-body" id="cartBody">
+        <div class="empty-cart" id="emptyCart">
+            <i class="bi bi-bag"></i>
+            <p>Your cart is empty</p>
+            <small style="color:#bbb;">Start adding some beautiful flowers!</small>
+        </div>
+        <div id="cartItems"></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span class="cart-total-amount" id="cartTotal">R0.00</span>
+        </div>
+        <button class="btn-checkout" onclick="checkout()">
+            <i class="bi bi-lock"></i> Proceed to Checkout
+        </button>
+    </div>
+</div>
+
+<div class="modal fade auth-modal" id="authModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
         <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fs-2" id="galleryModalLabel">Gallery<span style="color: var(--charcoal);">.</span></h5>
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="authModalTitle">Sign In</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid px-0">
-                    <div class="row g-3 g-md-4" id="galleryGrid">
-                        <!-- Contents -->
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">close</button>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                    <p class="text-center mt-3 mb-0">
+                        Don't have an account? <span class="auth-switch" onclick="toggleAuthModal('register')">Register</span>
+                    </p>
+                    <p class="text-center mt-2 mb-0">
+                        <span class="auth-switch" onclick="toggleAuthModal('reset')">Forgot Password?</span>
+                    </p>
+                </form>
+                <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+                    <div class="mb-3">
+                        <label for="registerName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" placeholder="Create a password (min 6 chars)" required minlength="6">
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPasswordConfirm" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="registerPasswordConfirm" placeholder="Confirm your password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                    <p class="text-center mt-3 mb-0">
+                        Already have an account? <span class="auth-switch" onclick="toggleAuthModal('login')">Sign In</span>
+                    </p>
+                </form>
+                <form id="resetForm" onsubmit="handleResetPassword(event)" style="display:none;">
+                    <div class="mb-3">
+                        <label for="resetEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="resetEmail" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+                    <p class="text-center mt-3 mb-0">
+                        <span class="auth-switch" onclick="toggleAuthModal('login')">Back to Sign In</span>
+                    </p>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade image-view-modal" id="imageViewModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content bg-transparent">
-            <div class="modal-body position-relative">
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-loader" id="modalLoader"></div>
-                <img src="" id="largeImageView" alt="Large view" style="opacity: 0;">
+<div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">Delivery Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm" onsubmit="saveAddressAndCheckout(event)">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="addrName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Street Address</label>
+                        <input type="text" class="form-control" id="addrStreet" placeholder="House number and street name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">City / Suburb</label>
+                        <input type="text" class="form-control" id="addrCity" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="addrPostal" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" id="addrCountry" value="South Africa" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="addrPhone" placeholder="For delivery updates" required>
+                    </div>
+                    <button type="submit" class="btn w-100" style="background:var(--gold);color:#000;font-weight:600;">
+                        <i class="bi bi-check-circle"></i> Confirm & Pay
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade product-detail-modal" id="productDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <img src="" id="detailImage" class="product-detail-image" alt="Product">
+                    </div>
+                    <div class="col-md-6">
+                        <h3 id="detailTitle" class="mb-2">Product Name</h3>
+                        <div class="product-detail-price mb-3" id="detailPrice">R0.00</div>
+                        <p id="detailDescription" class="text-muted mb-3">Product description goes here.</p>
+                        <div class="d-flex gap-2 mb-3 align-items-center">
+                            <label class="me-2">Quantity:</label>
+                            <input type="number" id="detailQuantity" value="1" min="1" style="width:70px; padding:0.3rem 0.5rem; border:1px solid #ddd; border-radius:4px;">
+                        </div>
+                        <button class="btn-add-cart" style="width:100%; padding:0.8rem;" onclick="addToCartFromDetail()">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="profileSection" style="display:none;" class="section-padding">
+    <div class="container">
+        <button class="profile-back-btn" onclick="hideProfile()">
+            <i class="bi bi-arrow-left"></i> Back to Shop
+        </button>
+        <h2 class="mt-3 mb-4">My Account</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-sidebar">
+                    <div class="text-center">
+                        <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
+                        <h5 id="profileName">User</h5>
+                        <p class="text-muted" id="profileEmail">user@email.com</p>
+                        <hr>
+                    </div>
+                    <button class="profile-tab-btn active" onclick="switchProfileTab('info')">
+                        <i class="bi bi-person"></i> Personal Info
+                    </button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('orders')">
+                        <i class="bi bi-box"></i> Order History
+                    </button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('security')">
+                        <i class="bi bi-shield"></i> Security
+                    </button>
+                    <button class="profile-tab-btn" onclick="switchProfileTab('addresses')">
+                        <i class="bi bi-geo-alt"></i> Addresses
+                    </button>
+                    <hr>
+                    <button class="profile-tab-btn" onclick="handleLogout()" style="color:#e74c3c;">
+                        <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="profile-section">
+                    <div id="tabInfo" class="profile-tab-content active">
+                        <h4>Personal Information</h4>
+                        <form onsubmit="updateProfile(event)">
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="profileFullName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="profileEmailInput" disabled>
+                            </div>
+                            <button type="submit" class="btn" style="background:var(--gold);color:#000;font-weight:600;">
+                                Update Profile
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="tabOrders" class="profile-tab-content">
+                        <h4>Order History</h4>
+                        <div id="orderList"><p class="text-muted">No orders yet</p></div>
+                    </div>
+
+                    <div id="tabSecurity" class="profile-tab-content">
+                        <h4>Change Password</h4>
+                        <form onsubmit="changePassword(event)">
+                            <div class="mb-3">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPass" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPass" required minlength="6">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPass" required>
+                            </div>
+                            <button type="submit" class="btn" style="background:var(--gold);color:#000;font-weight:600;">
+                                Change Password
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="tabAddresses" class="profile-tab-content">
+                        <h4>Your Addresses</h4>
+                        <p class="text-muted small">Manage your personal and delivery addresses below.</p>
+
+                        <div class="address-section-title"><i class="bi bi-person"></i> Personal Address</div>
+                        <div id="personalAddressDisplay" class="address-display">
+                            <p class="text-muted">No personal address saved.</p>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="togglePersonalAddressForm()">
+                            <i class="bi bi-plus"></i> Add / Edit Personal Address
+                        </button>
+
+                        <div id="personalAddressForm" class="address-form-container" style="display:none; margin-top: 0.5rem;">
+                            <h6 class="mb-3">Personal Address</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="personalName" placeholder="Your full name">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Street Address</label>
+                                    <input type="text" class="form-control" id="personalStreet" placeholder="House number and street name">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">City / Suburb</label>
+                                    <input type="text" class="form-control" id="personalCity" placeholder="City">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" id="personalPostal" placeholder="Code">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="personalCountry" value="South Africa">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="personalPhone" placeholder="Phone number">
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn" style="background:var(--gold);color:#000;font-weight:600;" onclick="savePersonalAddress()">
+                                        <i class="bi bi-save"></i> Save Personal Address
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="togglePersonalAddressForm()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="address-section-title mt-4"><i class="bi bi-truck"></i> Delivery Address</div>
+                        <div id="deliveryAddressDisplay" class="address-display">
+                            <p class="text-muted">No delivery address saved.</p>
+                        </div>
+
+                        <div class="same-as-checkbox">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sameAsPersonalCheckbox" onchange="toggleDeliverySameAsPersonal()">
+                                <label class="form-check-label" for="sameAsPersonalCheckbox">
+                                    <strong>Use my personal address as delivery address</strong>
+                                    <br><small class="text-muted">Check this box to use your personal address for deliveries</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="deliveryAddressForm" class="address-form-container" style="display:none; margin-top: 0.5rem;">
+                            <h6 class="mb-3">Delivery Address</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="deliveryName" placeholder="Recipient's full name">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Street Address</label>
+                                    <input type="text" class="form-control" id="deliveryStreet" placeholder="House number and street name">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">City / Suburb</label>
+                                    <input type="text" class="form-control" id="deliveryCity" placeholder="City">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" id="deliveryPostal" placeholder="Code">
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="deliveryCountry" value="South Africa">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="deliveryPhone" placeholder="Phone number">
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn" style="background:var(--gold);color:#000;font-weight:600;" onclick="saveDeliveryAddress()">
+                                        <i class="bi bi-save"></i> Save Delivery Address
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="toggleDeliveryAddressForm()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleDeliveryAddressForm()">
+                            <i class="bi bi-plus"></i> Add / Edit Delivery Address
+                        </button>
+
+                        <div class="mt-4">
+                            <hr>
+                            <h6>Saved Addresses</h6>
+                            <div id="addressList"><p class="text-muted">No addresses saved.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <main>
     <section class="hero-section">
-        <div class="swiper hero-swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide hero-slide">
-                    <img src="images/image00021.jpeg" alt="">
-                    <div class="slide-overlay">
-                        <div class="slide-content">
-                            <div class="slide-pre-title">Sustainable floral artistry</div>
-                            <div class="slide-title">MAKE IT <span>LAST FOREVER!</span></div>
-                            <div class="slide-desc">Where silk meets sophistication — bespoke floral designs for the discerning eye.</div>
-                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
-                        </div>
+    <div class="swiper hero-swiper">
+        <div class="swiper-wrapper">
+            <!-- Slide 1 -->
+            <div class="swiper-slide hero-slide">
+                <img src="images/image00021.jpeg" alt="">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-pre-title">Sustainable floral artistry</div>
+                        <div class="slide-title">MAKE IT <span>LAST FOREVER!</span></div>
+                        <div class="slide-desc">Where silk meets sophistication — bespoke floral designs for the discerning eye.</div>
+                        <a href="#" class="slide-btn" onclick="openGalleryModal(event)">SHOP NOW <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="swiper-slide hero-slide">
-                    <img src="images/image00002.jpeg" alt="">
-                    <div class="slide-overlay">
-                        <div class="slide-content">
-                            <div class="slide-pre-title">Celebration</div>
-                            <div class="slide-title">Forever <span>moments</span></div>
-                            <div class="slide-desc">Weddings, events & milestones — everlasting beauty for your special day.</div>
-                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
-                        </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="swiper-slide hero-slide">
+                <img src="images/image00002.jpeg" alt="">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-pre-title">Celebration</div>
+                        <div class="slide-title">Forever <span>moments</span></div>
+                        <div class="slide-desc">Weddings, events & milestones — everlasting beauty for your special day.</div>
+                        <a href="#" class="slide-btn" onclick="openGalleryModal(event)">SHOP NOW <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="swiper-slide hero-slide">
-                    <img src="images/image000022.jpg" alt="">
-                    <div class="slide-overlay">
-                        <div class="slide-content">
-                            <div class="slide-pre-title">Interior</div>
-                            <div class="slide-title">Spatial <span>poetry</span></div>
-                            <div class="slide-desc">Transform your space with sustainable floral artistry that lasts.</div>
-                            <a href="#" class="slide-btn" onclick="openGalleryModal(event)">EXPLORE COLLECTION <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <!-- Slide 3 -->
+            <div class="swiper-slide hero-slide">
+                <img src="images/image000022.jpg" alt="">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-pre-title">Interior</div>
+                        <div class="slide-title">Spatial <span>poetry</span></div>
+                        <div class="slide-desc">Transform your space with sustainable floral artistry that lasts.</div>
+                        <a href="#" class="slide-btn" onclick="openGalleryModal(event)">SHOP NOW <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="products" class="section-padding">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="display-5 fw-semibold">Our <span style="color: var(--gold);">Collection</span></h2>
+                <p class="text-muted">Handcrafted silk flowers that last forever</p>
+            </div>
+
+            <div class="filter-section">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold small">Search</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search products..." oninput="filterProducts()">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold small">Sort By</label>
+                        <select class="form-select" id="sortSelect" onchange="filterProducts()">
+                            <option value="default">Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold small">Filter</label>
+                        <select class="form-select" id="filterSelect" onchange="filterProducts()">
+                            <option value="all">All Products</option>
+                            <option value="sale">On Sale</option>
+                            <option value="bouquets">Bouquets</option>
+                            <option value="centerpieces">Centerpieces</option>
+                            <option value="weddings">Weddings</option>
+                            <option value="gifts">Gifts</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <span class="text-muted small" id="productCount">0 products</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4" id="productGrid"></div>
+
+            <div class="pagination-custom" id="pagination"></div>
+        </div>
+    </section>
+
+    <section id="adminPanel" style="display:none;">
+        <div class="container">
+            <div class="admin-panel">
+                <h3 class="mb-3"><i class="bi bi-speedometer2" style="color:var(--gold);"></i> Admin Dashboard</h3>
+
+                <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#productsPanel" type="button" role="tab">Products</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="add-tab" data-bs-toggle="tab" data-bs-target="#addPanel" type="button" role="tab">Add Product</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#ordersPanel" type="button" role="tab">Orders</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#usersPanel" type="button" role="tab">Users</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="productsPanel" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Sale Price</th>
+                                        <th>Category</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="addPanel" role="tabpanel">
+                        <form class="admin-form" id="addProductForm" onsubmit="addProduct(event)">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Product Name *</label>
+                                    <input type="text" class="form-control" id="prodName" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-semibold">Price (R) *</label>
+                                    <input type="number" class="form-control" id="prodPrice" step="0.01" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-semibold">Sale Price (R)</label>
+                                    <input type="number" class="form-control" id="prodSalePrice" step="0.01" placeholder="Optional">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Category *</label>
+                                    <select class="form-select" id="prodCategory" required>
+                                        <option value="bouquets">Bouquets</option>
+                                        <option value="centerpieces">Centerpieces</option>
+                                        <option value="weddings">Weddings</option>
+                                        <option value="gifts">Gifts</option>
+                                        <option value="collections">Collections</option>
+                                        <option value="installations">Installations</option>
+                                        <option value="decor">Décor</option>
+                                        <option value="subscription">Subscription</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Image URL *</label>
+                                    <input type="text" class="form-control" id="prodImage" placeholder="e.g., images/product.jpg" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Description *</label>
+                                    <textarea class="form-control" id="prodDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn" style="background:var(--gold); color:var(--charcoal); font-weight:600;">
+                                        <i class="bi bi-plus-circle"></i> Add Product
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="ordersPanel" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminOrdersTable">
+                                    <tr><td colspan="6" class="text-center text-muted">No orders yet</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="usersPanel" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Joined</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUsersTable"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -1167,7 +1224,7 @@
         </div>
     </section>
 
-    <div class="container section-padding">
+    <div class="container section-padding" style="margin-top: -60px;">
         <div class="row g-5">
             <div class="col-lg-5">
                 <div style="width: 80px; height: 3px; background: var(--gold); margin: 2rem 0;"></div>
@@ -1201,11 +1258,11 @@
                 <div class="service-card">
                     <h4>Events & Occasions</h4>
                     <ul class="service-list">
-                        <li><i class="bi bi-dot"></i> Wedding bouquets, centerpieces, and venue styling</li>
-                        <li><i class="bi bi-dot"></i> Birthday, anniversary, and milestone celebration décor</li>
-                        <li><i class="bi bi-dot"></i> Corporate event floral staging (conferences, launches, galas)</li>
-                        <li><i class="bi bi-dot"></i> Themed party floral accents (e.g., tropical, vintage, modern chic)</li>
-                        <li><i class="bi bi-dot"></i> Silk flower arches, canopies, and photo booth backdrops</li>
+                        <li> Wedding bouquets, centerpieces, and venue styling</li>
+                        <li> Birthday, anniversary, and milestone celebration décor</li>
+                        <li> Corporate event floral staging (conferences, launches, galas)</li>
+                        <li> Themed party floral accents (e.g., tropical, vintage, modern chic)</li>
+                        <li> Silk flower arches, canopies, and photo booth backdrops</li>
                     </ul>
                 </div>
             </div>
@@ -1213,11 +1270,11 @@
                 <div class="service-card">
                     <h4>Personal & Residential Spaces</h4>
                     <ul class="service-list">
-                        <li><i class="bi bi-dot"></i> Bespoke arrangements for living rooms, dining tables, and patios</li>
-                        <li><i class="bi bi-dot"></i> Long-lasting floral styling for home offices and study areas</li>
-                        <li><i class="bi bi-dot"></i> Seasonal home décor (spring blossoms, festive arrangements)</li>
-                        <li><i class="bi bi-dot"></i> Luxury silk flower gift sets and hampers</li>
-                        <li><i class="bi bi-dot"></i> Personalized floral artistry for private collections</li>
+                        <li> Bespoke arrangements for living rooms, dining tables, and patios</li>
+                        <li> Long-lasting floral styling for home offices and study areas</li>
+                        <li> Seasonal home décor (spring blossoms, festive arrangements)</li>
+                        <li> Luxury silk flower gift sets and hampers</li>
+                        <li> Personalized floral artistry for private collections</li>
                     </ul>
                 </div>
             </div>
@@ -1225,11 +1282,11 @@
                 <div class="service-card">
                     <h4>Specialized Services</h4>
                     <ul class="service-list">
-                        <li><i class="bi bi-dot"></i> Subscription-based floral refresh programs (monthly/quarterly updates)</li>
-                        <li><i class="bi bi-dot"></i> Custom design consultations for tailored arrangements</li>
-                        <li><i class="bi bi-dot"></i> Silk flower maintenance and refresh services</li>
-                        <li><i class="bi bi-dot"></i> Eco-conscious décor solutions (sustainable, reusable artistry)</li>
-                        <li><i class="bi bi-dot"></i> Artistic installations blending silk flowers with other design elements (lighting, sculpture, greenery)</li>
+                        <li> Subscription-based floral refresh programs (monthly/quarterly updates)</li>
+                        <li> Custom design consultations for tailored arrangements</li>
+                        <li> Silk flower maintenance and refresh services</li>
+                        <li> Eco-conscious décor solutions (sustainable, reusable artistry)</li>
+                        <li> Artistic installations blending silk flowers with other design elements (lighting, sculpture, greenery)</li>
                     </ul>
                 </div>
             </div>
@@ -1237,10 +1294,10 @@
                 <div class="service-card">
                     <h4>Creative & Marketing</h4>
                     <ul class="service-list">
-                        <li><i class="bi bi-dot"></i> Silk flower styling for photoshoots, film sets, and advertisements</li>
-                        <li><i class="bi bi-dot"></i> Branded floral displays for retail stores and product launches</li>
-                        <li><i class="bi bi-dot"></i> Collaborations with interior designers for permanent décor solutions</li>
-                        <li><i class="bi bi-dot"></i> Pop-up installations for exhibitions and trade shows</li>
+                        <li> Silk flower styling for photoshoots, film sets, and advertisements</li>
+                        <li> Branded floral displays for retail stores and product launches</li>
+                        <li> Collaborations with interior designers for permanent décor solutions</li>
+                        <li> Pop-up installations for exhibitions and trade shows</li>
                     </ul>
                 </div>
             </div>
@@ -1248,11 +1305,11 @@
     </div>
 </main>
 
-<footer class="footer-modern" style="margin-top: 60px;">
+<footer class="footer-modern">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-4">
-                <span style="font-size: 1rem; color: var(--gold);">MAKE IT LAST FOREVER<span class="gold-accent">!</span></span>
+                <span style="font-size: 1rem; color: var(--gold);">MAKE IT LAST FOREVER!</span>
                 <span class="footer-script">Sustainable and Environmentally-Friendly Floral Artistry</span>
             </div>
             <div class="col-md-4 text-center">
@@ -1260,7 +1317,7 @@
                 <a href="#" class="text-dark me-3"><i class="bi bi-instagram fs-4"></i></a>
             </div>
             <div class="col-md-4 text-end">
-                <small><i class="bi bi-c-circle" style="color: var(--gold);"></i> 2026 Forever Silk Flowers · all rights reserved</small>
+                <small><i class="bi bi-c-circle" style="color: var(--gold);"></i> 2026 Forever Silk Flowers</small>
             </div>
         </div>
     </div>
@@ -1268,146 +1325,1187 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const heroSwiper = new Swiper('.hero-swiper', {
-        loop: true,
-        speed: 800,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-    });
 
-    const header = document.getElementById('mainHeader');
-    const headerContact = document.getElementById('headerContact');
-    let lastScrollTop = 0;
-    let scrollThreshold = 10;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    updateProfile,
+    sendPasswordResetEmail,
+    updatePassword,
+    reauthenticateWithCredential,
+    EmailAuthProvider
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    getDocs,
+    getDoc,
+    deleteDoc,
+    updateDoc,
+    query,
+    where,
+    onSnapshot,
+    serverTimestamp,
+    addDoc
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (Math.abs(currentScroll - lastScrollTop) > scrollThreshold) {
-            if (currentScroll > lastScrollTop && currentScroll > 100) {
-                header.classList.add('hide');
-            } else {
-                header.classList.remove('hide');
+const firebaseConfig = {
+    apiKey: "AIzaSyD8aXpFFb7etvoIEMEmcaYgbU_2uqBXmZw",
+    authDomain: "foreversilk-c77b0.firebaseapp.com",
+    projectId: "foreversilk-c77b0",
+    storageBucket: "foreversilk-c77b0.firebasestorage.app",
+    messagingSenderId: "290769036761",
+    appId: "1:290769036761:web:edbe3262f51af0420fa5c8",
+    measurementId: "G-89XECFW7SN"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let currentUserRole = 'user';
+let products = [];
+let cart = [];
+let currentPage = 1;
+const ITEMS_PER_PAGE = 6;
+let filteredProducts = [];
+let isProductsLoaded = false;
+
+const $ = (id) => document.getElementById(id);
+const productGrid = $('productGrid');
+const pagination = $('pagination');
+const cartBadge = $('cartBadge');
+const cartItems = $('cartItems');
+const emptyCart = $('emptyCart');
+const cartFooter = $('cartFooter');
+const cartTotal = $('cartTotal');
+const authBtn = $('authBtn');
+const userBadge = $('userBadge');
+const userName = $('userName');
+const adminBadge = $('adminBadge');
+const adminToggleBtn = $('adminToggleBtn');
+const adminPanel = $('adminPanel');
+const productCount = $('productCount');
+const searchInput = $('searchInput');
+const sortSelect = $('sortSelect');
+const filterSelect = $('filterSelect');
+const spinner = $('spinnerOverlay');
+
+function showToast(message, type = 'success') {
+    const container = $('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast-custom ${type}`;
+    const icons = { success: 'bi-check-circle', error: 'bi-exclamation-circle', warning: 'bi-exclamation-triangle' };
+    toast.innerHTML = `<i class="bi ${icons[type] || icons.success}"></i> ${message}`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => container.removeChild(toast), 300);
+    }, 3000);
+}
+
+function showSpinner() { spinner.classList.add('active'); }
+function hideSpinner() { spinner.classList.remove('active'); }
+
+window.handleLogin = async function(event) {
+    event.preventDefault();
+    const email = $('loginEmail').value;
+    const password = $('loginPassword').value;
+    showSpinner();
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        bootstrap.Modal.getInstance($('authModal')).hide();
+        showToast('Welcome back!', 'success');
+        $('loginForm').reset();
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.handleRegister = async function(event) {
+    event.preventDefault();
+    const name = $('registerName').value;
+    const email = $('registerEmail').value;
+    const password = $('registerPassword').value;
+    const confirm = $('registerPasswordConfirm').value;
+
+    if (password !== confirm) {
+        showToast('Passwords do not match!', 'error');
+        return;
+    }
+
+    showSpinner();
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+            name, email, role: 'user', createdAt: serverTimestamp()
+        });
+        bootstrap.Modal.getInstance($('authModal')).hide();
+        showToast('Account created!', 'success');
+        $('registerForm').reset();
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.handleResetPassword = async function(event) {
+    event.preventDefault();
+    const email = $('resetEmail').value;
+    showSpinner();
+    try {
+        await sendPasswordResetEmail(auth, email);
+        showToast('Password reset email sent!', 'success');
+        $('resetForm').reset();
+        window.toggleAuthModal('login');
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.handleLogout = async function() {
+    try {
+        await signOut(auth);
+        showToast('Logged out successfully.', 'success');
+        window.hideProfile();
+    } catch (error) {
+        showToast('Error logging out.', 'error');
+    }
+};
+
+window.toggleAuthModal = function(mode = 'login') {
+    const modal = new bootstrap.Modal($('authModal'));
+    const title = $('authModalTitle');
+    const loginForm = $('loginForm');
+    const registerForm = $('registerForm');
+    const resetForm = $('resetForm');
+
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'none';
+    resetForm.style.display = 'none';
+
+    if (mode === 'login') {
+        title.textContent = 'Sign In';
+        loginForm.style.display = 'block';
+    } else if (mode === 'register') {
+        title.textContent = 'Create Account';
+        registerForm.style.display = 'block';
+    } else if (mode === 'reset') {
+        title.textContent = 'Reset Password';
+        resetForm.style.display = 'block';
+    }
+    modal.show();
+};
+
+window.showProfile = function() {
+    if (!currentUser) return;
+    $('profileSection').style.display = 'block';
+    $('products').style.display = 'none';
+    $('adminPanel').style.display = 'none';
+
+    $('profileName').textContent = currentUser.displayName || 'User';
+    $('profileEmail').textContent = currentUser.email;
+    $('profileFullName').value = currentUser.displayName || '';
+    $('profileEmailInput').value = currentUser.email;
+
+    loadOrders();
+    loadAddressesUI();
+};
+
+window.hideProfile = function() {
+    $('profileSection').style.display = 'none';
+    $('products').style.display = 'block';
+};
+
+window.switchProfileTab = function(tab) {
+    document.querySelectorAll('.profile-tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.profile-tab-btn').forEach(el => el.classList.remove('active'));
+
+    const map = { info: 'tabInfo', orders: 'tabOrders', security: 'tabSecurity', addresses: 'tabAddresses' };
+    $(map[tab]).classList.add('active');
+    event.target.classList.add('active');
+};
+
+window.updateProfile = async function(event) {
+    event.preventDefault();
+    const name = $('profileFullName').value;
+    showSpinner();
+    try {
+        await updateProfile(currentUser, { displayName: name });
+        await updateDoc(doc(db, 'users', currentUser.uid), { name });
+        $('profileName').textContent = name;
+        userName.textContent = name.split(' ')[0];
+        showToast('Profile updated!', 'success');
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.changePassword = async function(event) {
+    event.preventDefault();
+    const current = $('currentPass').value;
+    const newPass = $('newPass').value;
+    const confirm = $('confirmPass').value;
+
+    if (newPass !== confirm) {
+        showToast('Passwords do not match!', 'error');
+        return;
+    }
+
+    showSpinner();
+    try {
+        const credential = EmailAuthProvider.credential(currentUser.email, current);
+        await reauthenticateWithCredential(currentUser, credential);
+        await updatePassword(currentUser, newPass);
+        showToast('Password changed!', 'success');
+        document.getElementById('tabSecurity').querySelector('form').reset();
+    } catch (error) {
+        showToast(error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.togglePersonalAddressForm = function() {
+    const form = $('personalAddressForm');
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        loadPersonalAddressToForm();
+    } else {
+        form.style.display = 'none';
+    }
+};
+
+window.toggleDeliveryAddressForm = function() {
+    const form = $('deliveryAddressForm');
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        loadDeliveryAddressToForm();
+    } else {
+        form.style.display = 'none';
+    }
+};
+
+async function loadPersonalAddressToForm() {
+    if (!currentUser) return;
+    try {
+        const docSnap = await getDoc(doc(db, 'users', currentUser.uid));
+        const data = docSnap.data() || {};
+        const addr = data.personalAddress || {};
+        $('personalName').value = addr.name || currentUser.displayName || '';
+        $('personalStreet').value = addr.street || '';
+        $('personalCity').value = addr.city || '';
+        $('personalPostal').value = addr.postalCode || '';
+        $('personalCountry').value = addr.country || 'South Africa';
+        $('personalPhone').value = addr.phone || '';
+    } catch (error) {
+        showToast('Error loading address: ' + error.message, 'error');
+    }
+}
+
+async function loadDeliveryAddressToForm() {
+    if (!currentUser) return;
+    try {
+        const docSnap = await getDoc(doc(db, 'users', currentUser.uid));
+        const data = docSnap.data() || {};
+        const addr = data.deliveryAddress || {};
+        $('deliveryName').value = addr.name || currentUser.displayName || '';
+        $('deliveryStreet').value = addr.street || '';
+        $('deliveryCity').value = addr.city || '';
+        $('deliveryPostal').value = addr.postalCode || '';
+        $('deliveryCountry').value = addr.country || 'South Africa';
+        $('deliveryPhone').value = addr.phone || '';
+    } catch (error) {
+        showToast('Error loading address: ' + error.message, 'error');
+    }
+}
+
+window.savePersonalAddress = async function() {
+    if (!currentUser) { showToast('Please sign in.', 'error'); return; }
+    const addr = {
+        name: $('personalName').value,
+        street: $('personalStreet').value,
+        city: $('personalCity').value,
+        postalCode: $('personalPostal').value,
+        country: $('personalCountry').value,
+        phone: $('personalPhone').value
+    };
+    if (!addr.street || !addr.city) {
+        showToast('Street and City are required.', 'error');
+        return;
+    }
+    showSpinner();
+    try {
+        const ref = doc(db, 'users', currentUser.uid);
+        const docSnap = await getDoc(ref);
+        const data = docSnap.data() || {};
+        data.personalAddress = addr;
+        if ($('sameAsPersonalCheckbox').checked) {
+            data.deliveryAddress = { ...addr };
+        }
+        await updateDoc(ref, data);
+        showToast('Personal address saved!', 'success');
+        $('personalAddressForm').style.display = 'none';
+        loadAddressesUI();
+    } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.saveDeliveryAddress = async function() {
+    if (!currentUser) { showToast('Please sign in.', 'error'); return; }
+    const addr = {
+        name: $('deliveryName').value,
+        street: $('deliveryStreet').value,
+        city: $('deliveryCity').value,
+        postalCode: $('deliveryPostal').value,
+        country: $('deliveryCountry').value,
+        phone: $('deliveryPhone').value
+    };
+    if (!addr.street || !addr.city) {
+        showToast('Street and City are required.', 'error');
+        return;
+    }
+    showSpinner();
+    try {
+        const ref = doc(db, 'users', currentUser.uid);
+        const docSnap = await getDoc(ref);
+        const data = docSnap.data() || {};
+        data.deliveryAddress = addr;
+        if ($('sameAsPersonalCheckbox').checked) {
+            $('sameAsPersonalCheckbox').checked = false;
+            data.sameAsPersonal = false;
+        }
+        await updateDoc(ref, data);
+        showToast('Delivery address saved!', 'success');
+        $('deliveryAddressForm').style.display = 'none';
+        loadAddressesUI();
+    } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.toggleDeliverySameAsPersonal = function() {
+    if (!currentUser) return;
+    const checked = $('sameAsPersonalCheckbox').checked;
+    (async () => {
+        try {
+            const ref = doc(db, 'users', currentUser.uid);
+            const docSnap = await getDoc(ref);
+            const data = docSnap.data() || {};
+            data.sameAsPersonal = checked;
+            if (checked) {
+                if (data.personalAddress) {
+                    data.deliveryAddress = { ...data.personalAddress };
+                } else {
+                    showToast('Please save a personal address first.', 'warning');
+                    $('sameAsPersonalCheckbox').checked = false;
+                    data.sameAsPersonal = false;
+                    await updateDoc(ref, data);
+                    loadAddressesUI();
+                    return;
+                }
+            }
+            await updateDoc(ref, data);
+            loadAddressesUI();
+            showToast(checked ? 'Delivery address set to personal.' : 'Delivery address unlinked.', 'success');
+        } catch (error) {
+            showToast('Error: ' + error.message, 'error');
+        }
+    })();
+};
+
+async function loadAddressesUI() {
+    if (!currentUser) return;
+    try {
+        const docSnap = await getDoc(doc(db, 'users', currentUser.uid));
+        const data = docSnap.data() || {};
+        const personal = data.personalAddress || null;
+        const delivery = data.deliveryAddress || null;
+        const same = data.sameAsPersonal || false;
+
+        const personalDisplay = $('personalAddressDisplay');
+        if (personal) {
+            personalDisplay.innerHTML = `
+                <p><strong>${personal.name || 'N/A'}</strong></p>
+                <p>${personal.street || ''}</p>
+                <p>${personal.city || ''}, ${personal.postalCode || ''}</p>
+                <p>${personal.country || ''}</p>
+                <p>📞 ${personal.phone || 'No phone'}</p>
+            `;
+        } else {
+            personalDisplay.innerHTML = '<p class="text-muted">No personal address saved.</p>';
+        }
+
+        const deliveryDisplay = $('deliveryAddressDisplay');
+        const effectiveDelivery = same ? personal : delivery;
+        if (effectiveDelivery) {
+            const label = same ? ' <span class="badge bg-warning">(same as personal)</span>' : '';
+            deliveryDisplay.innerHTML = `
+                <p><strong>${effectiveDelivery.name || 'N/A'}</strong> ${label}</p>
+                <p>${effectiveDelivery.street || ''}</p>
+                <p>${effectiveDelivery.city || ''}, ${effectiveDelivery.postalCode || ''}</p>
+                <p>${effectiveDelivery.country || ''}</p>
+                <p>📞 ${effectiveDelivery.phone || 'No phone'}</p>
+            `;
+        } else {
+            deliveryDisplay.innerHTML = '<p class="text-muted">No delivery address saved.</p>';
+        }
+
+        const checkbox = $('sameAsPersonalCheckbox');
+        checkbox.checked = same;
+        if (same) {
+            $('deliveryAddressDisplay').innerHTML = `
+                <p class="text-muted">Using personal address for delivery.</p>
+                <p><strong>${personal?.name || 'N/A'}</strong></p>
+                <p>${personal?.street || ''}</p>
+                <p>${personal?.city || ''}, ${personal?.postalCode || ''}</p>
+                <p>${personal?.country || ''}</p>
+                <p>📞 ${personal?.phone || 'No phone'}</p>
+            `;
+        }
+
+        const addressList = $('addressList');
+        const addresses = [];
+        if (personal) addresses.push({ type: 'Personal', address: personal });
+        if (delivery && !same) addresses.push({ type: 'Delivery', address: delivery });
+        if (addresses.length === 0) {
+            addressList.innerHTML = '<p class="text-muted">No addresses saved.</p>';
+        } else {
+            addressList.innerHTML = addresses.map((item, index) => `
+                <div class="address-item">
+                    <span class="badge bg-secondary">${item.type}</span>
+                    <p class="mb-0 mt-1"><strong>${item.address.name || 'N/A'}</strong></p>
+                    <p class="mb-0">${item.address.street || ''}</p>
+                    <p class="mb-0">${item.address.city || ''}, ${item.address.postalCode || ''}</p>
+                    <p class="mb-0">${item.address.country || ''}</p>
+                    <p class="mb-0">📞 ${item.address.phone || 'No phone'}</p>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('loadAddressesUI error:', error);
+    }
+}
+
+function loadCart() {
+    const saved = localStorage.getItem('foreverSilkCart');
+    if (saved) {
+        try { cart = JSON.parse(saved); } catch (e) { cart = []; }
+        updateCartUI();
+    }
+}
+
+function saveCart() {
+    localStorage.setItem('foreverSilkCart', JSON.stringify(cart));
+}
+
+window.addToCart = function(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) {
+        showToast('Product not found!', 'error');
+        return;
+    }
+    const price = product.salePrice || product.price;
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ id: product.id, name: product.name, price: price, image: product.image, quantity: 1 });
+    }
+    saveCart();
+    updateCartUI();
+    showToast(`${product.name} added to cart!`, 'success');
+};
+
+window.removeFromCart = function(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    updateCartUI();
+};
+
+window.updateQuantity = function(productId, delta) {
+    const item = cart.find(i => i.id === productId);
+    if (!item) return;
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        window.removeFromCart(productId);
+        return;
+    }
+    saveCart();
+    updateCartUI();
+};
+
+function getCartTotal() {
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+}
+
+function getTotalItems() {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function updateCartUI() {
+    const totalItems = getTotalItems();
+    cartBadge.textContent = totalItems;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '';
+        emptyCart.style.display = 'block';
+        cartFooter.style.display = 'none';
+        return;
+    }
+
+    emptyCart.style.display = 'none';
+    cartFooter.style.display = 'block';
+
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <img src="${item.image}" class="cart-item-image" alt="${item.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22%3ENo%20Img%3C/text%3E%3C/svg%3E'">
+            <div class="cart-item-details">
+                <div class="cart-item-title">${item.name}</div>
+                <div class="cart-item-price">R${item.price.toFixed(2)}</div>
+                <div class="cart-item-quantity">
+                    <button onclick="window.updateQuantity('${item.id}', -1)">−</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="window.updateQuantity('${item.id}', 1)">+</button>
+                </div>
+            </div>
+            <button class="cart-item-remove" onclick="window.removeFromCart('${item.id}')">
+                <i class="bi bi-trash3"></i>
+            </button>
+        </div>
+    `).join('');
+
+    cartTotal.textContent = `R${getCartTotal().toFixed(2)}`;
+}
+
+window.toggleCart = function() {
+    const panel = $('cartPanel');
+    const overlay = $('cartOverlay');
+    panel.classList.toggle('open');
+    overlay.classList.toggle('active');
+};
+
+window.checkout = async function() {
+    if (cart.length === 0) {
+        showToast('Your cart is empty!', 'error');
+        return;
+    }
+    if (!currentUser) {
+        showToast('Please sign in to checkout.', 'error');
+        window.toggleAuthModal('login');
+        return;
+    }
+
+    try {
+        const docSnap = await getDoc(doc(db, 'users', currentUser.uid));
+        const data = docSnap.data() || {};
+        const personal = data.personalAddress;
+        const delivery = data.deliveryAddress;
+        const same = data.sameAsPersonal;
+        const effectiveDelivery = same ? personal : delivery;
+
+        if (effectiveDelivery) {
+            if (confirm(`Use saved address for delivery?\n\n${effectiveDelivery.street}\n${effectiveDelivery.city}, ${effectiveDelivery.postalCode}\n${effectiveDelivery.country}\n\n📞 ${effectiveDelivery.phone || 'No phone'}`)) {
+                proceedToPayment(effectiveDelivery);
+                return;
             }
         }
-        
-        if (currentScroll > 150) {
-            headerContact.classList.add('hidden');
-            header.classList.add('compact');
-        } else {
-            headerContact.classList.remove('hidden');
-            header.classList.remove('compact');
-        }
-        
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-    }, false);
+    } catch (error) {
+        console.error('Error checking address:', error);
+    }
 
-    window.addEventListener('load', function() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > 150) {
-            headerContact.classList.add('hidden');
-            header.classList.add('compact');
-        }
-    });
+    const modal = new bootstrap.Modal($('addressModal'));
+    $('addrName').value = currentUser.displayName || '';
+    modal.show();
+};
 
-    const galleryImages = [
-        'images/image00001.jpeg',
-        'images/image00002.jpeg',
-        'images/image00003.jpeg',
-        'images/image000022.jpg',
-        'images/image00005.jpeg',
-        'images/image00006.jpeg',
-        'images/image00007.jpeg',
-        'images/image00008.jpeg',
-        'images/image00009.jpeg',
-        'images/image00010.jpeg',
-        'images/image00011.jpeg',
-        'images/image00012.jpeg',
-        'images/image00013.jpeg',
-        'images/image00021.jpeg',
-        'images/image00015.jpeg',
-        'images/image00016.jpeg',
-        'images/image00017.jpeg',
-        'images/image00018.jpeg',
-        'images/image00019.jpeg',
-        'images/image00020.jpeg'
-    ];
+window.saveAddressAndCheckout = async function(event) {
+    event.preventDefault();
+    const modal = bootstrap.Modal.getInstance($('addressModal'));
 
-    const galleryGrid = document.getElementById('galleryGrid');
-    
-    galleryImages.forEach((src, index) => {
-        const col = document.createElement('div');
-        col.className = 'col-6 col-md-4 col-lg-3';
-        
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
-        galleryItem.setAttribute('onclick', `openImageView('${src}')`);
-        
-        const loader = document.createElement('div');
-        loader.className = 'image-loader';
-        loader.id = `loader-${index}`;
-        
-        const spinner = document.createElement('div');
-        spinner.className = 'spinner';
-        loader.appendChild(spinner);
-        
-        const img = document.createElement('img');
-        img.src = src;
-        img.className = 'gallery-img';
-        img.alt = `Gallery ${index + 1}`;
-        img.loading = 'lazy';
-        img.setAttribute('onload', `imageLoaded(${index})`);
-        
-        galleryItem.appendChild(loader);
-        galleryItem.appendChild(img);
-        col.appendChild(galleryItem);
-        galleryGrid.appendChild(col);
-    });
-
-    window.imageLoaded = function(index) {
-        const loader = document.getElementById(`loader-${index}`);
-        const img = document.querySelector(`.gallery-img[src="${galleryImages[index]}"]`);
-        if (loader) {
-            loader.classList.add('hidden');
-        }
-        if (img) {
-            img.classList.add('loaded');
-        }
+    const addressData = {
+        name: $('addrName').value,
+        street: $('addrStreet').value,
+        city: $('addrCity').value,
+        postalCode: $('addrPostal').value,
+        country: $('addrCountry').value,
+        phone: $('addrPhone').value
     };
 
-    function openImageView(imageSrc) {
-        const imageViewModal = new bootstrap.Modal(document.getElementById('imageViewModal'));
-        const modalImage = document.getElementById('largeImageView');
-        const modalLoader = document.getElementById('modalLoader');
-        
-        modalImage.style.opacity = '0';
-        modalImage.src = '';
-        modalLoader.classList.remove('hidden');
-        
-        imageViewModal.show();
-        
-        const img = new Image();
-        img.onload = function() {
-            modalImage.src = imageSrc;
-            modalImage.style.opacity = '1';
-            modalLoader.classList.add('hidden');
-            modalImage.classList.add('loaded');
-        };
-        img.src = imageSrc;
+    modal.hide();
+
+    try {
+        const ref = doc(db, 'users', currentUser.uid);
+        const docSnap = await getDoc(ref);
+        const data = docSnap.data() || {};
+        data.deliveryAddress = addressData;
+        data.sameAsPersonal = false;
+        await updateDoc(ref, data);
+    } catch (error) {
+        console.error('Error saving address:', error);
     }
 
-    window.openImageView = openImageView;
+    proceedToPayment(addressData);
+};
 
-    function openGalleryModal(event) {
-        event.preventDefault();
-        const galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
-        galleryModal.show();
+async function proceedToPayment(address) {
+    const total = getCartTotal();
+    const checkoutBtn = document.querySelector('.btn-checkout');
+    const originalText = checkoutBtn.innerHTML;
+    checkoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+    checkoutBtn.disabled = true;
+
+    try {
+        const orderRef = await addDoc(collection(db, 'orders'), {
+            userId: currentUser.uid,
+            userEmail: currentUser.email,
+            userName: address.name || currentUser.displayName || 'Customer',
+            address: address,
+            items: cart,
+            total: total,
+            status: 'pending',
+            createdAt: serverTimestamp()
+        });
+
+        cart = [];
+        saveCart();
+        updateCartUI();
+        toggleCart();
+
+        showToast(`✅ Order placed! Order #${orderRef.id.slice(0, 8)}`, 'success');
+        alert(`Order placed successfully!\n\nOrder #${orderRef.id.slice(0, 8)}\nTotal: R${total.toFixed(2)}\nDelivery to: ${address.street}, ${address.city}\n\nThank you for your order!`);
+    } catch (error) {
+        console.error('Checkout error:', error);
+        showToast('Error: ' + error.message, 'error');
+    } finally {
+        checkoutBtn.innerHTML = originalText;
+        checkoutBtn.disabled = false;
+    }
+}
+
+function filterProducts() {
+    const search = searchInput.value.toLowerCase();
+    const filter = filterSelect.value;
+    const sort = sortSelect.value;
+
+    let result = [...products];
+    if (search) {
+        result = result.filter(p => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search));
+    }
+    if (filter === 'sale') {
+        result = result.filter(p => p.salePrice && p.salePrice < p.price);
+    } else if (filter !== 'all') {
+        result = result.filter(p => p.category === filter);
     }
 
-    window.openGalleryModal = openGalleryModal;
+    switch (sort) {
+        case 'price-asc': result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)); break;
+        case 'price-desc': result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)); break;
+        case 'name-asc': result.sort((a, b) => a.name.localeCompare(b.name)); break;
+        case 'name-desc': result.sort((a, b) => b.name.localeCompare(a.name)); break;
+        default: break;
+    }
+
+    filteredProducts = result;
+    productCount.textContent = `${result.length} products`;
+    currentPage = 1;
+    renderProducts();
+}
+
+function renderProducts() {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const pageItems = filteredProducts.slice(start, end);
+
+    if (pageItems.length === 0) {
+        productGrid.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-search" style="font-size:3rem;color:#ddd;"></i>
+                <p class="text-muted mt-3">No products found. Try adjusting your filters.</p>
+            </div>
+        `;
+    } else {
+        productGrid.innerHTML = pageItems.map(p => `
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="product-card ${p.salePrice && p.salePrice < p.price ? 'sale' : ''}">
+                    <img src="${p.image}" class="product-image" alt="${p.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect width=%22300%22 height=%22300%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2218%22%3ENo%20Image%3C/text%3E%3C/svg%3E'">
+                    <div class="product-body">
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-price">
+                            R${(p.salePrice || p.price).toFixed(2)}
+                            ${p.salePrice && p.salePrice < p.price ? `<span class="original-price">R${p.price.toFixed(2)}</span>` : ''}
+                        </div>
+                        <div class="product-description">${p.description ? p.description.substring(0, 60) : ''}...</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="window.addToCart('${p.id}')">
+                                <i class="bi bi-cart-plus"></i> Add
+                            </button>
+                            <button class="btn-view-product" onclick="window.viewProduct('${p.id}')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    renderPagination();
+}
+
+function renderPagination() {
+    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+
+    let html = `
+        <button onclick="window.goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+            <i class="bi bi-chevron-left"></i>
+        </button>
+    `;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button onclick="window.goToPage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+    }
+
+    html += `
+        <button onclick="window.goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    `;
+
+    pagination.innerHTML = html;
+}
+
+window.goToPage = function(page) {
+    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderProducts();
+    document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+let currentDetailProductId = null;
+
+window.viewProduct = function(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) {
+        showToast('Product not found!', 'error');
+        return;
+    }
+    currentDetailProductId = productId;
+    $('detailImage').src = product.image;
+    $('detailImage').onerror = function() {
+        this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22350%22 height=%22350%22%3E%3Crect width=%22350%22 height=%22350%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2220%22%3ENo%20Image%3C/text%3E%3C/svg%3E';
+    };
+    $('detailTitle').textContent = product.name;
+    const price = product.salePrice || product.price;
+    $('detailPrice').innerHTML = `R${price.toFixed(2)}${product.salePrice ? `<span class="original-price" style="text-decoration:line-through;color:#999;font-size:0.8rem;margin-left:0.5rem;">R${product.price.toFixed(2)}</span>` : ''}`;
+    $('detailDescription').textContent = product.description;
+    $('detailQuantity').value = 1;
+    const modal = new bootstrap.Modal($('productDetailModal'));
+    modal.show();
+};
+
+window.addToCartFromDetail = function() {
+    const qty = parseInt($('detailQuantity').value) || 1;
+    if (currentDetailProductId) {
+        const product = products.find(p => p.id === currentDetailProductId);
+        if (product) {
+            const price = product.salePrice || product.price;
+            const existingItem = cart.find(item => item.id === currentDetailProductId);
+            if (existingItem) {
+                existingItem.quantity += qty;
+            } else {
+                cart.push({ id: product.id, name: product.name, price: price, image: product.image, quantity: qty });
+            }
+            saveCart();
+            updateCartUI();
+            showToast(`${product.name} added to cart!`, 'success');
+            bootstrap.Modal.getInstance($('productDetailModal')).hide();
+        }
+    }
+};
+
+async function loadProductsFromFirestore() {
+    showSpinner();
+    try {
+        const snapshot = await getDocs(collection(db, 'products'));
+        if (snapshot.empty) {
+            products = [];
+            filteredProducts = [];
+            productGrid.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-database" style="font-size:3rem;color:#ddd;"></i>
+                    <p class="text-muted mt-3">No products in database yet.</p>
+                    ${currentUserRole === 'admin' ? `
+                        <button class="btn" style="background:var(--gold);color:var(--charcoal);font-weight:600;margin-top:1rem;" onclick="window.seedDatabase()">
+                            <i class="bi bi-cloud-upload"></i> Load Sample Products
+                        </button>
+                    ` : `
+                        <p class="text-muted small">Our collection is being updated. Please check back soon!</p>
+                    `}
+                </div>
+            `;
+            pagination.innerHTML = '';
+            productCount.textContent = '0 products';
+            hideSpinner();
+            return;
+        }
+
+        products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        filteredProducts = [...products];
+        filterProducts();
+        isProductsLoaded = true;
+    } catch (error) {
+        console.error('Error loading products:', error);
+        productGrid.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;"></i>
+                <p class="text-muted mt-3">Error loading products. Please refresh or try again.</p>
+                <p class="text-danger small">${error.message}</p>
+            </div>
+        `;
+        showToast('Error loading products: ' + error.message, 'error');
+    }
+    hideSpinner();
+}
+
+function setupProductListener() {
+    onSnapshot(collection(db, 'products'), (snapshot) => {
+        products = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        filteredProducts = [...products];
+        filterProducts();
+        isProductsLoaded = true;
+    }, (error) => {
+        console.error('Listener error:', error);
+        if (!isProductsLoaded) {
+            showToast('Error loading products: ' + error.message, 'error');
+        }
+    });
+}
+
+window.seedDatabase = async function() {
+    if (currentUserRole !== 'admin') {
+        showToast('Admin access required!', 'error');
+        return;
+    }
+    if (!confirm('This will add sample products to your database. Continue?')) return;
+    showSpinner();
+    try {
+        const snapshot = await getDocs(collection(db, 'products'));
+        if (!snapshot.empty) {
+            if (!confirm('Products already exist. Replace them?')) {
+                hideSpinner();
+                return;
+            }
+            for (const doc of snapshot.docs) {
+                await deleteDoc(doc.ref);
+            }
+        }
+
+        const sampleProducts = [
+            { name: "Luxury Silk Bouquet", price: 850, salePrice: null, category: "bouquets", image: "images/image00001.jpeg", description: "A stunning handcrafted bouquet of premium silk flowers." },
+            { name: "Elegant Centerpiece", price: 1200, salePrice: 999, category: "centerpieces", image: "images/image00002.jpeg", description: "Create a sophisticated atmosphere with this elegant silk flower centerpiece." },
+            { name: "Romantic Rose Collection", price: 650, salePrice: null, category: "collections", image: "images/image00003.jpeg", description: "A beautiful collection of silk roses in soft romantic hues." },
+            { name: "Modern Floral Installation", price: 2100, salePrice: 1800, category: "installations", image: "images/image000022.jpg", description: "Contemporary floral installation featuring a mix of silk flowers." },
+            { name: "Wedding Arch Flowers", price: 1800, salePrice: 1500, category: "weddings", image: "images/image00005.jpeg", description: "Stunning silk flower arrangements for wedding arches." },
+            { name: "Seasonal Décor Set", price: 950, salePrice: null, category: "decor", image: "images/image00006.jpeg", description: "Versatile seasonal silk flower arrangements." },
+            { name: "Luxury Gift Hamper", price: 1500, salePrice: 1299, category: "gifts", image: "images/image00007.jpeg", description: "A premium gift hamper with exquisite silk flower arrangement." },
+            { name: "Office Floral Package", price: 2200, salePrice: null, category: "subscription", image: "images/image00008.jpeg", description: "Monthly subscription service for office spaces." }
+        ];
+
+        for (const product of sampleProducts) {
+            await addDoc(collection(db, 'products'), { ...product, createdAt: serverTimestamp() });
+        }
+
+        showToast('✅ Products added to Firestore!', 'success');
+        await loadProductsFromFirestore();
+    } catch (error) {
+        showToast('Error seeding products: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.toggleAdminPanel = function() {
+    if (adminPanel.style.display === 'none') {
+        adminPanel.style.display = 'block';
+        adminPanel.scrollIntoView({ behavior: 'smooth' });
+        loadAdminData();
+    } else {
+        adminPanel.style.display = 'none';
+    }
+};
+
+async function loadAdminData() {
+    await loadAdminProducts();
+    await loadAdminUsers();
+}
+
+async function loadAdminProducts() {
+    const tbody = $('adminProductTable');
+    try {
+        const snapshot = await getDocs(collection(db, 'products'));
+        if (snapshot.empty) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No products found.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = snapshot.docs.map(doc => {
+            const p = doc.data();
+            return `
+                <tr>
+                    <td><img src="${p.image}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22%3ENo%20Image%3C/text%3E%3C/svg%3E'">
+                    </td>
+                    <td>${p.name}</td>
+                    <td>R${p.price.toFixed(2)}</td>
+                    <td>${p.salePrice ? 'R' + p.salePrice.toFixed(2) : '-'}</td>
+                    <td>${p.category}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="window.editProduct('${doc.id}')">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="window.deleteProduct('${doc.id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (error) {
+        showToast('Error loading products: ' + error.message, 'error');
+    }
+}
+
+async function loadAdminUsers() {
+    const tbody = $('adminUsersTable');
+    try {
+        const snapshot = await getDocs(collection(db, 'users'));
+        tbody.innerHTML = snapshot.docs.map(doc => {
+            const u = doc.data();
+            return `
+                <tr>
+                    <td>${u.name || 'N/A'}</td>
+                    <td>${u.email}</td>
+                    <td><span class="badge ${u.role === 'admin' ? 'bg-warning' : 'bg-secondary'}">${u.role || 'user'}</span></td>
+                    <td>${u.createdAt ? new Date(u.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        ${u.role !== 'admin' ? `<button class="btn btn-sm btn-primary" onclick="window.makeAdmin('${doc.id}')">Make Admin</button>` : ''}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (error) {
+        showToast('Error loading users: ' + error.message, 'error');
+    }
+}
+
+window.editProduct = async function(id) {
+    const docRef = doc(db, 'products', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        const p = docSnap.data();
+        const addTab = document.querySelector('#add-tab');
+        new bootstrap.Tab(addTab).show();
+        $('prodName').value = p.name;
+        $('prodPrice').value = p.price;
+        $('prodSalePrice').value = p.salePrice || '';
+        $('prodCategory').value = p.category;
+        $('prodImage').value = p.image;
+        $('prodDescription').value = p.description;
+        $('addProductForm').dataset.editId = id;
+        $('addProductForm').querySelector('button[type="submit"]').innerHTML =
+            '<i class="bi bi-pencil"></i> Update Product';
+        showToast('Editing product. Update and submit to save changes.', 'warning');
+    }
+};
+
+window.deleteProduct = async function(id) {
+    if (!confirm('Delete this product?')) return;
+    showSpinner();
+    try {
+        await deleteDoc(doc(db, 'products', id));
+        showToast('Product deleted!', 'success');
+        loadAdminProducts();
+        await loadProductsFromFirestore();
+    } catch (error) {
+        showToast('Error deleting product: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.makeAdmin = async function(id) {
+    if (!confirm('Make this user an admin?')) return;
+    showSpinner();
+    try {
+        await updateDoc(doc(db, 'users', id), { role: 'admin' });
+        showToast('User is now an admin!', 'success');
+        loadAdminUsers();
+    } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+window.addProduct = async function(event) {
+    event.preventDefault();
+    const form = $('addProductForm');
+    const data = {
+        name: $('prodName').value,
+        price: parseFloat($('prodPrice').value),
+        salePrice: $('prodSalePrice').value ? parseFloat($('prodSalePrice').value) : null,
+        category: $('prodCategory').value,
+        image: $('prodImage').value,
+        description: $('prodDescription').value,
+        createdAt: serverTimestamp()
+    };
+    showSpinner();
+    try {
+        const editId = form.dataset.editId;
+        if (editId) {
+            await updateDoc(doc(db, 'products', editId), data);
+            showToast('Product updated!', 'success');
+            delete form.dataset.editId;
+            form.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-plus-circle"></i> Add Product';
+        } else {
+            await addDoc(collection(db, 'products'), data);
+            showToast('Product added!', 'success');
+        }
+        form.reset();
+        loadAdminProducts();
+        await loadProductsFromFirestore();
+        const productsTab = document.querySelector('#products-tab');
+        new bootstrap.Tab(productsTab).show();
+    } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+    }
+    hideSpinner();
+};
+
+async function loadOrders() {
+    if (!currentUser) return;
+    try {
+        const q = query(collection(db, 'orders'), where('userId', '==', currentUser.uid));
+        const snapshot = await getDocs(q);
+        const container = $('orderList');
+        if (snapshot.empty) {
+            container.innerHTML = '<p class="text-muted">No orders yet</p>';
+            return;
+        }
+        container.innerHTML = snapshot.docs.map(doc => {
+            const order = doc.data();
+            return `
+                <div class="order-item">
+                    <div class="row">
+                        <div class="col-4"><strong>#${doc.id.slice(0,8)}</strong></div>
+                        <div class="col-4">R${order.total?.toFixed(2) || '0.00'}</div>
+                        <div class="col-4">
+                            <span class="badge bg-${order.status === 'completed' ? 'success' : 'warning'}">
+                                ${order.status || 'pending'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('Error loading orders:', error);
+    }
+}
+
+function updateUserUI(user) {
+    if (user) {
+        authBtn.style.display = 'none';
+        userBadge.style.display = 'inline-flex';
+        userName.textContent = user.displayName ? user.displayName.split(' ')[0] : 'User';
+
+        const userRef = doc(db, 'users', user.uid);
+        getDoc(userRef).then(docSnap => {
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.role === 'admin') {
+                    adminBadge.style.display = 'inline';
+                    adminToggleBtn.style.display = 'inline-flex';
+                    currentUserRole = 'admin';
+                } else {
+                    adminBadge.style.display = 'none';
+                    adminToggleBtn.style.display = 'none';
+                    currentUserRole = 'user';
+                    adminPanel.style.display = 'none';
+                }
+            }
+        }).catch(() => {
+            adminBadge.style.display = 'none';
+            adminToggleBtn.style.display = 'none';
+        });
+    } else {
+        authBtn.style.display = 'inline-flex';
+        userBadge.style.display = 'none';
+        adminBadge.style.display = 'none';
+        adminToggleBtn.style.display = 'none';
+        adminPanel.style.display = 'none';
+        currentUserRole = 'user';
+    }
+}
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        updateUserUI(user);
+        await loadProductsFromFirestore();
+    } else {
+        currentUser = null;
+        updateUserUI(null);
+        await loadProductsFromFirestore();
+        window.hideProfile();
+    }
+});
+
+loadCart();
+loadProductsFromFirestore();
+setupProductListener();
+
+new Swiper('.hero-swiper', {
+    loop: true,
+    speed: 800,
+    autoplay: { delay: 5000, disableOnInteraction: false },
+});
+
+const header = $('mainHeader');
+window.addEventListener('scroll', function() {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > 100) {
+        header.classList.add('hide');
+    } else {
+        header.classList.remove('hide');
+    }
+}, false);
+
+window.filterProducts = filterProducts;
+window.seedDatabase = seedDatabase;
+window.addToCartFromDetail = addToCartFromDetail;
+window.toggleAdminPanel = window.toggleAdminPanel;
+
+console.log('✅ Address sections with proper forms loaded. Personal and delivery addresses with "same as personal" checkbox.');
 </script>
 </body>
 </html>
