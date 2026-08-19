@@ -802,7 +802,6 @@
                     <div class="col-md-6">
                         <h3 id="detailTitle" class="mb-2">Product Name</h3>
                         <div class="product-detail-price mb-3" id="detailPrice">R0.00</div>
-                        <p id="detailDescription" class="text-muted mb-3">Product description goes here.</p>
                         <div class="d-flex gap-2 mb-3 align-items-center">
                             <label class="me-2">Quantity:</label>
                             <input type="number" id="detailQuantity" value="1" min="1" style="width:70px; padding:0.3rem 0.5rem; border:1px solid #ddd; border-radius:4px;">
@@ -1013,9 +1012,8 @@
     <section class="hero-section">
     <div class="swiper hero-swiper">
         <div class="swiper-wrapper">
-            <!-- Slide 1 -->
             <div class="swiper-slide hero-slide">
-                <img src="images/image00021.jpeg" alt="">
+                <img src="images/fsf100.jpeg" alt="">
                 <div class="slide-overlay">
                     <div class="slide-content">
                         <div class="slide-pre-title">Sustainable floral artistry</div>
@@ -1025,9 +1023,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Slide 2 -->
             <div class="swiper-slide hero-slide">
-                <img src="images/image00002.jpeg" alt="">
+                <img src="images/fsf120.jpeg" alt="">
                 <div class="slide-overlay">
                     <div class="slide-content">
                         <div class="slide-pre-title">Celebration</div>
@@ -1037,9 +1034,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Slide 3 -->
             <div class="swiper-slide hero-slide">
-                <img src="images/image000022.jpg" alt="">
+                <img src="images/fsf122.jpeg" alt="">
                 <div class="slide-overlay">
                     <div class="slide-content">
                         <div class="slide-pre-title">Interior</div>
@@ -1169,10 +1165,6 @@
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">Image URL *</label>
                                     <input type="text" class="form-control" id="prodImage" placeholder="e.g., images/product.jpg" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-semibold">Description *</label>
-                                    <textarea class="form-control" id="prodDescription" rows="3" required></textarea>
                                 </div>
                                 <div class="col-12">
                                     <button type="submit" class="btn" style="background:var(--gold); color:var(--charcoal); font-weight:600;">
@@ -2006,7 +1998,7 @@ function filterProducts() {
 
     let result = [...products];
     if (search) {
-        result = result.filter(p => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search));
+        result = result.filter(p => p.name.toLowerCase().includes(search));
     }
     if (filter === 'sale') {
         result = result.filter(p => p.salePrice && p.salePrice < p.price);
@@ -2051,7 +2043,6 @@ function renderProducts() {
                             R${(p.salePrice || p.price).toFixed(2)}
                             ${p.salePrice && p.salePrice < p.price ? `<span class="original-price">R${p.price.toFixed(2)}</span>` : ''}
                         </div>
-                        <div class="product-description">${p.description ? p.description.substring(0, 60) : ''}...</div>
                         <div class="product-actions">
                             <button class="btn-add-cart" onclick="window.addToCart('${p.id}')">
                                 <i class="bi bi-cart-plus"></i> Add
@@ -2118,7 +2109,6 @@ window.viewProduct = function(productId) {
     $('detailTitle').textContent = product.name;
     const price = product.salePrice || product.price;
     $('detailPrice').innerHTML = `R${price.toFixed(2)}${product.salePrice ? `<span class="original-price" style="text-decoration:line-through;color:#999;font-size:0.8rem;margin-left:0.5rem;">R${product.price.toFixed(2)}</span>` : ''}`;
-    $('detailDescription').textContent = product.description;
     $('detailQuantity').value = 1;
     const modal = new bootstrap.Modal($('productDetailModal'));
     modal.show();
@@ -2155,13 +2145,7 @@ async function loadProductsFromFirestore() {
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-database" style="font-size:3rem;color:#ddd;"></i>
                     <p class="text-muted mt-3">No products in database yet.</p>
-                    ${currentUserRole === 'admin' ? `
-                        <button class="btn" style="background:var(--gold);color:var(--charcoal);font-weight:600;margin-top:1rem;" onclick="window.seedDatabase()">
-                            <i class="bi bi-cloud-upload"></i> Load Sample Products
-                        </button>
-                    ` : `
-                        <p class="text-muted small">Our collection is being updated. Please check back soon!</p>
-                    `}
+                    <p class="text-muted small">Our collection is being updated. Please check back soon!</p>
                 </div>
             `;
             pagination.innerHTML = '';
@@ -2190,10 +2174,7 @@ async function loadProductsFromFirestore() {
 
 function setupProductListener() {
     onSnapshot(collection(db, 'products'), (snapshot) => {
-        products = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         filteredProducts = [...products];
         filterProducts();
         isProductsLoaded = true;
@@ -2204,48 +2185,6 @@ function setupProductListener() {
         }
     });
 }
-
-window.seedDatabase = async function() {
-    if (currentUserRole !== 'admin') {
-        showToast('Admin access required!', 'error');
-        return;
-    }
-    if (!confirm('This will add sample products to your database. Continue?')) return;
-    showSpinner();
-    try {
-        const snapshot = await getDocs(collection(db, 'products'));
-        if (!snapshot.empty) {
-            if (!confirm('Products already exist. Replace them?')) {
-                hideSpinner();
-                return;
-            }
-            for (const doc of snapshot.docs) {
-                await deleteDoc(doc.ref);
-            }
-        }
-
-        const sampleProducts = [
-            { name: "Luxury Silk Bouquet", price: 850, salePrice: null, category: "bouquets", image: "images/image00001.jpeg", description: "A stunning handcrafted bouquet of premium silk flowers." },
-            { name: "Elegant Centerpiece", price: 1200, salePrice: 999, category: "centerpieces", image: "images/image00002.jpeg", description: "Create a sophisticated atmosphere with this elegant silk flower centerpiece." },
-            { name: "Romantic Rose Collection", price: 650, salePrice: null, category: "collections", image: "images/image00003.jpeg", description: "A beautiful collection of silk roses in soft romantic hues." },
-            { name: "Modern Floral Installation", price: 2100, salePrice: 1800, category: "installations", image: "images/image000022.jpg", description: "Contemporary floral installation featuring a mix of silk flowers." },
-            { name: "Wedding Arch Flowers", price: 1800, salePrice: 1500, category: "weddings", image: "images/image00005.jpeg", description: "Stunning silk flower arrangements for wedding arches." },
-            { name: "Seasonal Décor Set", price: 950, salePrice: null, category: "decor", image: "images/image00006.jpeg", description: "Versatile seasonal silk flower arrangements." },
-            { name: "Luxury Gift Hamper", price: 1500, salePrice: 1299, category: "gifts", image: "images/image00007.jpeg", description: "A premium gift hamper with exquisite silk flower arrangement." },
-            { name: "Office Floral Package", price: 2200, salePrice: null, category: "subscription", image: "images/image00008.jpeg", description: "Monthly subscription service for office spaces." }
-        ];
-
-        for (const product of sampleProducts) {
-            await addDoc(collection(db, 'products'), { ...product, createdAt: serverTimestamp() });
-        }
-
-        showToast('✅ Products added to Firestore!', 'success');
-        await loadProductsFromFirestore();
-    } catch (error) {
-        showToast('Error seeding products: ' + error.message, 'error');
-    }
-    hideSpinner();
-};
 
 window.toggleAdminPanel = function() {
     if (adminPanel.style.display === 'none') {
@@ -2320,10 +2259,8 @@ async function loadAdminUsers() {
 }
 
 window.editProduct = async function(id) {
-    const docRef = doc(db, 'products', id);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        const p = docSnap.data();
+    const p = products.find(product => product.id === id);
+    if (p) {
         const addTab = document.querySelector('#add-tab');
         new bootstrap.Tab(addTab).show();
         $('prodName').value = p.name;
@@ -2331,7 +2268,6 @@ window.editProduct = async function(id) {
         $('prodSalePrice').value = p.salePrice || '';
         $('prodCategory').value = p.category;
         $('prodImage').value = p.image;
-        $('prodDescription').value = p.description;
         $('addProductForm').dataset.editId = id;
         $('addProductForm').querySelector('button[type="submit"]').innerHTML =
             '<i class="bi bi-pencil"></i> Update Product';
@@ -2375,7 +2311,6 @@ window.addProduct = async function(event) {
         salePrice: $('prodSalePrice').value ? parseFloat($('prodSalePrice').value) : null,
         category: $('prodCategory').value,
         image: $('prodImage').value,
-        description: $('prodDescription').value,
         createdAt: serverTimestamp()
     };
     showSpinner();
@@ -2501,7 +2436,6 @@ window.addEventListener('scroll', function() {
 }, false);
 
 window.filterProducts = filterProducts;
-window.seedDatabase = seedDatabase;
 window.addToCartFromDetail = addToCartFromDetail;
 window.toggleAdminPanel = window.toggleAdminPanel;
 
